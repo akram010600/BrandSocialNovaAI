@@ -3,327 +3,432 @@ import { useNavigate } from "react-router-dom";
 import Header from "../components/Header.jsx";
 import { api } from "../api/api.js";
 
+
 export default function CreatePost() {
 
+
   const [form, setForm] = useState({
+
     title: "",
     content: "",
-    platform: "instagram",
+    platform: "facebook",
     status: "draft",
+
   });
 
-  const [topic, setTopic] = useState("");
 
-  const [options, setOptions] = useState({
-    field: "عام",
-    goal: "زيادة التفاعل",
-    content_type: "منشور",
+
+  const [data, setData] = useState({
+
+    business: "",
+    category: "تعليم",
+    goal: "زيادة العملاء",
+    post_type: "منشور تعريفي",
+    platform: "facebook",
+
   });
+
+
 
   const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
 
+
   const handleChange = (e) => {
+
     setForm({
+
       ...form,
-      [e.target.name]: e.target.value,
+
+      [e.target.name]: e.target.value
+
     });
+
   };
 
 
-  const handleOptionChange = (e) => {
-    setOptions({
-      ...options,
-      [e.target.name]: e.target.value,
+
+  const handleDataChange = (e) => {
+
+    setData({
+
+      ...data,
+
+      [e.target.name]: e.target.value
+
     });
+
   };
+
 
 
   const handleGenerate = async () => {
 
-    if (!topic) return;
+
+    if (!data.business.trim()) {
+
+      setError("اكتب اسم النشاط أولاً");
+
+      return;
+
+    }
+
+
 
     setLoading(true);
+
     setError("");
+
+
 
     try {
 
-      const result = await api.generateContent({
-        topic,
-        platform: form.platform,
-        field: options.field,
-        goal: options.goal,
-        content_type: options.content_type,
-      });
+
+      const result = await api.generateContent(data);
+
 
 
       setForm({
+
         ...form,
+
         title: result.title,
+
         content: result.content,
+
+        platform: data.platform
+
       });
 
 
-    } catch (err) {
+
+    } catch(err) {
+
 
       setError(err.message);
+
 
     } finally {
 
+
       setLoading(false);
 
+
     }
+
 
   };
 
 
-  const handleSubmit = async (e) => {
+
+
+  const handleSubmit = async(e)=>{
+
 
     e.preventDefault();
 
-    setError("");
 
-    try {
+    if(!form.title || !form.content){
+
+      setError("قم بتوليد المحتوى أولاً");
+
+      return;
+
+    }
+
+
+
+    try{
+
 
       await api.createPost(form);
 
+
       navigate("/");
 
-    } catch (err) {
+
+    }catch(err){
+
 
       setError(err.message);
 
+
     }
+
 
   };
 
 
-  return (
 
-    <div className="main">
 
-      <Header title="إنشاء منشور جديد" />
+return (
 
+<div className="main">
 
-      <div className="content">
 
+<Header title="إنشاء منشور جديد"/>
 
-        {error && (
-          <p style={{color:"#DC2626"}}>
-            {error}
-          </p>
-        )}
 
 
+<div className="content">
 
-        <div className="post-card">
 
-          <h3>
-            ✨ توليد محتوى ذكي
-          </h3>
 
+{error && (
 
-          <input
-            style={{
-              width:"100%",
-              padding:10,
-              marginBottom:10
-            }}
-            placeholder="اكتب فكرة المنشور"
-            value={topic}
-            onChange={(e)=>setTopic(e.target.value)}
-          />
+<p style={{color:"red"}}>
 
+{error}
 
+</p>
 
-          <select
-            name="field"
-            value={options.field}
-            onChange={handleOptionChange}
-          >
+)}
 
-            <option value="عام">
-              عام
-            </option>
 
-            <option value="مطاعم">
-              مطاعم
-            </option>
 
-            <option value="حضانة">
-              حضانة
-            </option>
 
-            <option value="عقارات">
-              عقارات
-            </option>
+<div className="post-card">
 
-            <option value="خدمات">
-              خدمات
-            </option>
 
-          </select>
+<h3>
+✨ إعداد الحملة الذكية
+</h3>
 
 
 
-          <select
-            name="goal"
-            value={options.goal}
-            onChange={handleOptionChange}
-          >
+<input
 
-            <option>
-              زيادة المبيعات
-            </option>
+name="business"
 
-            <option>
-              زيادة التفاعل
-            </option>
+placeholder="اسم النشاط مثال: مدرسة النخبة"
 
-            <option>
-              جذب العملاء
-            </option>
+value={data.business}
 
-            <option>
-              بناء العلامة التجارية
-            </option>
+onChange={handleDataChange}
 
-          </select>
+/>
 
 
 
-          <select
-            name="content_type"
-            value={options.content_type}
-            onChange={handleOptionChange}
-          >
+<select
 
-            <option>
-              منشور
-            </option>
+name="category"
 
-            <option>
-              إعلان
-            </option>
+value={data.category}
 
-            <option>
-              عرض
-            </option>
+onChange={handleDataChange}
 
-            <option>
-              نصيحة
-            </option>
+>
 
-          </select>
+<option>تعليم</option>
 
+<option>حضانة</option>
 
+<option>مطاعم</option>
 
-          <button
-            type="button"
-            onClick={handleGenerate}
-            disabled={loading}
-          >
+<option>عقارات</option>
 
-            {loading ? "جاري التوليد..." : "ولّد"}
+<option>خدمات</option>
 
-          </button>
 
+</select>
 
-        </div>
 
 
+<select
 
-        <form
-          className="create-form post-card"
-          onSubmit={handleSubmit}
-        >
+name="goal"
 
+value={data.goal}
 
-          <input
-            name="title"
-            placeholder="عنوان المنشور"
-            value={form.title}
-            onChange={handleChange}
-            required
-          />
+onChange={handleDataChange}
 
+>
 
 
-          <textarea
-            name="content"
-            rows="7"
-            placeholder="محتوى المنشور"
-            value={form.content}
-            onChange={handleChange}
-            required
-          />
+<option>زيادة العملاء</option>
 
+<option>زيادة المبيعات</option>
 
+<option>بناء الثقة</option>
 
-          <select
-            name="platform"
-            value={form.platform}
-            onChange={handleChange}
-          >
+<option>زيادة التسجيل</option>
 
-            <option value="instagram">
-              Instagram
-            </option>
 
-            <option value="facebook">
-              Facebook
-            </option>
+</select>
 
-            <option value="twitter">
-              Twitter / X
-            </option>
 
-            <option value="linkedin">
-              LinkedIn
-            </option>
 
-          </select>
+<select
 
+name="post_type"
 
+value={data.post_type}
 
-          <select
-            name="status"
-            value={form.status}
-            onChange={handleChange}
-          >
+onChange={handleDataChange}
 
-            <option value="draft">
-              مسودة
-            </option>
+>
 
-            <option value="scheduled">
-              مجدول
-            </option>
 
-            <option value="published">
-              منشور
-            </option>
+<option>منشور تعريفي</option>
 
-          </select>
+<option>إعلان عرض</option>
 
+<option>خصم</option>
 
+<option>نصيحة</option>
 
-          <button type="submit">
-            حفظ المنشور
-          </button>
 
+</select>
 
-        </form>
 
 
-      </div>
 
+<select
 
-    </div>
+name="platform"
 
-  );
+value={data.platform}
+
+onChange={handleDataChange}
+
+>
+
+
+<option value="facebook">
+Facebook
+</option>
+
+
+<option value="instagram">
+Instagram
+</option>
+
+
+<option value="linkedin">
+LinkedIn
+</option>
+
+
+</select>
+
+
+
+
+<button
+
+onClick={handleGenerate}
+
+disabled={loading}
+
+>
+
+
+{loading ? "جاري الإنشاء..." : "✨ توليد المحتوى"}
+
+
+</button>
+
+
+</div>
+
+
+
+
+
+<form
+
+className="create-form post-card"
+
+onSubmit={handleSubmit}
+
+>
+
+
+
+<input
+
+name="title"
+
+placeholder="العنوان"
+
+value={form.title}
+
+onChange={handleChange}
+
+/>
+
+
+
+<textarea
+
+name="content"
+
+rows="8"
+
+placeholder="المحتوى"
+
+value={form.content}
+
+onChange={handleChange}
+
+/>
+
+
+
+
+<select
+
+name="platform"
+
+value={form.platform}
+
+onChange={handleChange}
+
+>
+
+
+<option value="facebook">
+Facebook
+</option>
+
+
+<option value="instagram">
+Instagram
+</option>
+
+
+<option value="linkedin">
+LinkedIn
+</option>
+
+
+</select>
+
+
+
+
+<button>
+
+حفظ المنشور
+
+</button>
+
+
+</form>
+
+
+
+</div>
+
+
+</div>
+
+);
+
 
 }

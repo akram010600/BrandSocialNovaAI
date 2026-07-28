@@ -4,9 +4,11 @@ import re
 from content_templates import CONTENT_TEMPLATES
 
 
+
 def detect_category(text: str):
 
     text = text.lower()
+
 
     if any(word in text for word in [
         "مدرسة",
@@ -20,6 +22,7 @@ def detect_category(text: str):
         return "تعليم"
 
 
+
     if any(word in text for word in [
         "حضانة",
         "طفل",
@@ -28,6 +31,7 @@ def detect_category(text: str):
         "كي جي"
     ]):
         return "حضانة"
+
 
 
     if any(word in text for word in [
@@ -41,6 +45,7 @@ def detect_category(text: str):
         return "مطاعم"
 
 
+
     if any(word in text for word in [
         "عقار",
         "شقة",
@@ -52,23 +57,41 @@ def detect_category(text: str):
         return "عقارات"
 
 
+
     return "خدمات"
+
+
 
 
 
 def extract_brand_name(prompt: str):
 
+
     brand = prompt
 
 
-    # استخراج ما بعد كلمة الموضوع
+
+    # دعم النظام القديم
     if "الموضوع:" in brand:
 
         brand = brand.split("الموضوع:")[1]
 
 
-    # حذف أي بيانات بعدها
+
+    # دعم النظام الجديد V2
+
+    if "اسم النشاط:" in brand:
+
+        brand = brand.split("اسم النشاط:")[1]
+
+
+
+    # حذف باقي بيانات الحملة
+
     for key in [
+        "المجال:",
+        "الهدف التسويقي:",
+        "نوع المنشور:",
         "المنصة:",
         "الأسلوب:",
         "المطلوب:",
@@ -76,38 +99,53 @@ def extract_brand_name(prompt: str):
         "أنت خبير"
     ]:
 
+
         if key in brand:
 
             brand = brand.split(key)[0]
 
 
-    # تنظيف المسافات والأسطر
+
+    # تنظيف
+
     brand = brand.strip()
 
 
-    # إذا بقي نص طويل نأخذ أول سطر فقط
+
+    # أخذ أول سطر فقط
+
     lines = brand.splitlines()
+
 
     if lines:
 
         brand = lines[0].strip()
 
 
+
     return brand or "علامتك التجارية"
+
+
+
+
 
 
 
 def generate_content(prompt: str):
 
+
     category = detect_category(prompt)
 
+
     brand = extract_brand_name(prompt)
+
 
 
     template = CONTENT_TEMPLATES.get(
         category,
         CONTENT_TEMPLATES["خدمات"]
     )
+
 
 
     title = random.choice(
@@ -118,6 +156,7 @@ def generate_content(prompt: str):
     )
 
 
+
     goal = random.choice(
         template.get(
             "goals",
@@ -126,13 +165,19 @@ def generate_content(prompt: str):
     )
 
 
+
     style = template.get(
         "style",
         ""
     )
 
 
+
+
+
     content_map = {
+
+
 
         "تعليم": f"""
 في {brand} نؤمن أن التعليم هو الاستثمار الحقيقي في المستقبل.
@@ -142,11 +187,15 @@ def generate_content(prompt: str):
 """,
 
 
+
+
         "حضانة": f"""
 في {brand} نهتم بأطفالكم ونوفر لهم بيئة آمنة ومحفزة.
 
 رعاية مميزة، تعلم ممتع، وتنمية شاملة تساعد الطفل على النمو بثقة.
 """,
+
+
 
 
         "مطاعم": f"""
@@ -156,6 +205,8 @@ def generate_content(prompt: str):
 """,
 
 
+
+
         "عقارات": f"""
 مع {brand} نساعدك في الوصول إلى العقار المناسب.
 
@@ -163,28 +214,42 @@ def generate_content(prompt: str):
 """,
 
 
+
+
         "خدمات": f"""
 مع {brand} نقدم حلولاً احترافية تساعدك على تطوير أعمالك وتحقيق أهدافك.
 """
+
     }
+
+
 
 
     content = f"""
 {title}
 
+
 {content_map.get(category)}
+
+
 
 ✨ الهدف:
 {goal}
 
+
 📌 أسلوب العلامة:
 {style}
+
+
 
 ✅ جودة عالية
 ✅ خدمة احترافية
 ✅ حلول تناسب احتياجات العملاء
 
+
+
 📲 تواصل معنا الآن واحصل على أفضل تجربة.
+
 
 #تسويق_رقمي
 #{category}
@@ -192,7 +257,11 @@ def generate_content(prompt: str):
 """
 
 
+
     return {
+
         "title": title,
+
         "content": content.strip()
+
     }

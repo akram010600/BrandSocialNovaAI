@@ -28,16 +28,21 @@ def on_startup():
     init_db()
 
 
+
 # ================= Schemas =================
 
+
 class PostCreate(BaseModel):
+
     title: str
     content: str
-    platform: str = "instagram"
+    platform: str = "facebook"
     status: str = "draft"
 
 
+
 class PostOut(BaseModel):
+
     id: int
     title: str
     content: str
@@ -48,41 +53,58 @@ class PostOut(BaseModel):
     shares: int
     created_at: datetime
 
+
     class Config:
         from_attributes = True
 
 
+
+# طلب إنشاء المحتوى الجديد
+
 class GenerateRequest(BaseModel):
-    topic: str
-    tone: str = "friendly"
-    platform: str = "instagram"
+
+    business: str
+    category: str
+    goal: str
+    post_type: str
+    platform: str = "facebook"
+
 
 
 class GenerateResponse(BaseModel):
+
     title: str
     content: str
 
 
+
 # ================= Health =================
+
 
 @app.get("/api/health")
 def health():
+
     return {
         "status": "ok",
         "service": "BrandSocialNovaAI"
     }
 
 
+
 # ================= Posts =================
 
+
 @app.get("/api/posts", response_model=list[PostOut])
-def list_posts(db: Session = Depends(get_db)):
+def list_posts(
+    db: Session = Depends(get_db)
+):
 
     return (
         db.query(Post)
         .order_by(Post.created_at.desc())
         .all()
     )
+
 
 
 @app.post("/api/posts", response_model=PostOut)
@@ -92,29 +114,43 @@ def create_post(
 ):
 
     post = Post(
+
         title=payload.title,
+
         content=payload.content,
+
         platform=payload.platform,
+
         status=payload.status,
+
 
         likes=random.randint(0,50)
         if payload.status == "published"
         else 0,
 
+
         comments=random.randint(0,20)
         if payload.status == "published"
         else 0,
 
+
         shares=random.randint(0,10)
         if payload.status == "published"
         else 0,
+
     )
 
+
     db.add(post)
+
     db.commit()
+
     db.refresh(post)
 
+
     return post
+
+
 
 
 @app.delete("/api/posts/{post_id}")
@@ -129,39 +165,61 @@ def delete_post(
         .first()
     )
 
+
     if not post:
+
         raise HTTPException(
             status_code=404,
             detail="Post not found"
         )
 
+
     db.delete(post)
+
     db.commit()
+
 
     return {
         "deleted": True
     }
 
 
-# ================= AI Generator =================
+
+
+# ================= AI Generator V2 =================
+
 
 @app.post(
     "/api/generate",
     response_model=GenerateResponse
 )
-def generate_post(payload: GenerateRequest):
+def generate_post(
+    payload: GenerateRequest
+):
+
 
     prompt = f"""
-الموضوع:
-{payload.topic}
+
+اسم النشاط:
+{payload.business}
+
+
+المجال:
+{payload.category}
+
+
+الهدف التسويقي:
+{payload.goal}
+
+
+نوع المنشور:
+{payload.post_type}
+
 
 المنصة:
 {payload.platform}
 
-الأسلوب:
-{payload.tone}
 
-أنشئ محتوى تسويقي عربي احترافي.
 """
 
 
@@ -170,83 +228,100 @@ def generate_post(payload: GenerateRequest):
         result = ai_generate_content(prompt)
 
 
-        if isinstance(result, dict):
+        return GenerateResponse(
 
-            title = result.get(
-                "title",
-                f"منشور عن {payload.topic}"
-            )
+            title=result["title"],
 
-            content = result.get(
-                "content",
-                ""
-            )
+            content=result["content"]
 
-        else:
-
-            title = f"منشور عن {payload.topic}"
-            content = str(result)
+        )
 
 
     except Exception as e:
 
-        title = f"منشور عن {payload.topic}"
 
-        content = (
-            "حدث خطأ في إنشاء المحتوى:\n"
-            + str(e)
+        raise HTTPException(
+
+            status_code=500,
+
+            detail=str(e)
+
         )
 
 
-    return GenerateResponse(
-        title=title,
-        content=content
-    )
 
 
 # ================= Analytics =================
+
 
 @app.get("/api/analytics")
 def analytics(
     db: Session = Depends(get_db)
 ):
 
+
     total_posts = (
+
         db.query(func.count(Post.id))
         .scalar()
+
         or 0
     )
+
 
     published = (
+
         db.query(func.count(Post.id))
+
         .filter(Post.status == "published")
+
         .scalar()
+
         or 0
     )
+
 
     total_likes = (
+
         db.query(func.sum(Post.likes))
+
         .scalar()
+
         or 0
     )
+
 
     total_comments = (
+
         db.query(func.sum(Post.comments))
+
         .scalar()
+
         or 0
     )
 
+
     total_shares = (
+
         db.query(func.sum(Post.shares))
+
         .scalar()
+
         or 0
     )
+
 
 
     return {
+
         "total_posts": total_posts,
+
         "published_posts": published,
+
         "total_likes": total_likes,
+
         "total_comments": total_comments,
+
         "total_shares": total_shares
+
     }
