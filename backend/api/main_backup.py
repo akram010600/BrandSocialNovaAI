@@ -28,8 +28,6 @@ def on_startup():
     init_db()
 
 
-# ================= Schemas =================
-
 class PostCreate(BaseModel):
     title: str
     content: str
@@ -63,7 +61,6 @@ class GenerateResponse(BaseModel):
     content: str
 
 
-# ================= Health =================
 
 @app.get("/api/health")
 def health():
@@ -73,16 +70,15 @@ def health():
     }
 
 
-# ================= Posts =================
 
 @app.get("/api/posts", response_model=list[PostOut])
 def list_posts(db: Session = Depends(get_db)):
-
     return (
         db.query(Post)
         .order_by(Post.created_at.desc())
         .all()
     )
+
 
 
 @app.post("/api/posts", response_model=PostOut)
@@ -96,15 +92,12 @@ def create_post(
         content=payload.content,
         platform=payload.platform,
         status=payload.status,
-
         likes=random.randint(0,50)
         if payload.status == "published"
         else 0,
-
         comments=random.randint(0,20)
         if payload.status == "published"
         else 0,
-
         shares=random.randint(0,10)
         if payload.status == "published"
         else 0,
@@ -117,10 +110,11 @@ def create_post(
     return post
 
 
+
 @app.delete("/api/posts/{post_id}")
 def delete_post(
     post_id:int,
-    db:Session = Depends(get_db)
+    db:Session=Depends(get_db)
 ):
 
     post = (
@@ -143,15 +137,15 @@ def delete_post(
     }
 
 
-# ================= AI Generator =================
 
-@app.post(
-    "/api/generate",
-    response_model=GenerateResponse
-)
+@app.post("/api/generate", response_model=GenerateResponse)
 def generate_post(payload: GenerateRequest):
 
     prompt = f"""
+أنت خبير تسويق رقمي.
+
+أنشئ منشور سوشيال ميديا احترافي باللغة العربية.
+
 الموضوع:
 {payload.topic}
 
@@ -161,54 +155,31 @@ def generate_post(payload: GenerateRequest):
 الأسلوب:
 {payload.tone}
 
-أنشئ محتوى تسويقي عربي احترافي.
+اكتب:
+عنوان جذاب
+محتوى تسويقي
+دعوة لاتخاذ إجراء
+هاشتاجات
 """
 
 
     try:
-
-        result = ai_generate_content(prompt)
-
-
-        if isinstance(result, dict):
-
-            title = result.get(
-                "title",
-                f"منشور عن {payload.topic}"
-            )
-
-            content = result.get(
-                "content",
-                ""
-            )
-
-        else:
-
-            title = f"منشور عن {payload.topic}"
-            content = str(result)
-
+        content = ai_generate_content(prompt)
 
     except Exception as e:
-
-        title = f"منشور عن {payload.topic}"
-
-        content = (
-            "حدث خطأ في إنشاء المحتوى:\n"
-            + str(e)
-        )
+        content = f"خطأ: {str(e)}"
 
 
     return GenerateResponse(
-        title=title,
+        title=f"منشور عن {payload.topic}",
         content=content
     )
 
 
-# ================= Analytics =================
 
 @app.get("/api/analytics")
 def analytics(
-    db: Session = Depends(get_db)
+    db:Session=Depends(get_db)
 ):
 
     total_posts = (
@@ -217,27 +188,10 @@ def analytics(
         or 0
     )
 
+
     published = (
         db.query(func.count(Post.id))
-        .filter(Post.status == "published")
-        .scalar()
-        or 0
-    )
-
-    total_likes = (
-        db.query(func.sum(Post.likes))
-        .scalar()
-        or 0
-    )
-
-    total_comments = (
-        db.query(func.sum(Post.comments))
-        .scalar()
-        or 0
-    )
-
-    total_shares = (
-        db.query(func.sum(Post.shares))
+        .filter(Post.status=="published")
         .scalar()
         or 0
     )
@@ -245,8 +199,5 @@ def analytics(
 
     return {
         "total_posts": total_posts,
-        "published_posts": published,
-        "total_likes": total_likes,
-        "total_comments": total_comments,
-        "total_shares": total_shares
+        "published_posts": published
     }
