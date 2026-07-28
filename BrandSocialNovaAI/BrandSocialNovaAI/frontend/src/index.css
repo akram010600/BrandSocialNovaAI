@@ -1,0 +1,142 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, "Segoe UI", Tahoma, sans-serif;
+  background: #f4f5f7;
+  color: #1f2937;
+}
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 220px;
+  background: #111827;
+  color: white;
+  padding: 20px 0;
+}
+
+.sidebar h2 {
+  padding: 0 20px 20px;
+  font-size: 18px;
+  color: #818CF8;
+}
+
+.sidebar a {
+  display: block;
+  padding: 12px 20px;
+  color: #D1D5DB;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background: #1F2937;
+  color: white;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: white;
+  padding: 16px 24px;
+  border-bottom: 1px solid #E5E7EB;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.content {
+  padding: 24px;
+  flex: 1;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.stat-card .value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #4F46E5;
+}
+
+.stat-card .label {
+  font-size: 13px;
+  color: #6B7280;
+  margin-top: 4px;
+}
+
+.post-card {
+  background: white;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.post-card .platform-badge {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #EEF2FF;
+  color: #4F46E5;
+  margin-bottom: 8px;
+}
+
+.post-card .meta {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+  font-size: 13px;
+  color: #6B7280;
+}
+
+form.create-form input,
+form.create-form textarea,
+form.create-form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+button {
+  padding: 10px 16px;
+  background: #4F46E5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+button:hover { background: #4338CA; }
+
+button.secondary {
+  background: #E5E7EB;
+  color: #1f2937;
+}
+
+button.secondary:hover { background: #D1D5DB; }
