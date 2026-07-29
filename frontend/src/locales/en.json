@@ -24,4 +24,22 @@
     "instagram": "Schedule content and manage posts",
     "google": "Manage local visibility and reviews"
   }
+  ,
+"dashboard": {
+  "title": "Smart dashboard for marketing management and content creation",
+  "total_posts": "Total Posts",
+  "published_posts": "Published Posts",
+  "likes": "Likes",
+  "comments": "Comments",
+  "shares": "Shares",
+  "ai_tools": "AI Tools",
+  "create_post": "Create AI Post",
+  "create_image": "AI Image Design",
+  "create_campaign": "Create Campaign",
+  "calendar": "Content Calendar",
+  "system_status": "System Status",
+  "engine": "AI Engine Running",
+  "database": "Database Connected",
+  "ready": "BrandSocialNova is ready to manage content"
+}
 }

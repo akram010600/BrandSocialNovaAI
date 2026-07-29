@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -20,6 +21,8 @@ export default function Dashboard(){
 
 
 const navigate = useNavigate();
+
+const { t } = useTranslation();
 
 
 
@@ -94,7 +97,7 @@ const cards=[
 
 {
 
-title:"إجمالي المنشورات",
+title:t("dashboard.total_posts"),
 
 value:stats.total_posts,
 
@@ -106,7 +109,7 @@ icon:<FileText size={32}/>
 
 {
 
-title:"المنشورات المنشورة",
+title:t("dashboard.published_posts"),
 
 value:stats.published_posts,
 
@@ -118,7 +121,7 @@ icon:<Sparkles size={32}/>
 
 {
 
-title:"الإعجابات",
+title:t("dashboard.likes"),
 
 value:stats.total_likes,
 
@@ -130,7 +133,7 @@ icon:<Heart size={32}/>
 
 {
 
-title:"التعليقات",
+title:t("dashboard.comments"),
 
 value:stats.total_comments,
 
@@ -142,7 +145,7 @@ icon:<MessageCircle size={32}/>
 
 {
 
-title:"المشاركات",
+title:t("dashboard.shares"),
 
 value:stats.total_shares,
 
@@ -166,6 +169,8 @@ return(
 
 
 
+
+
 <div className="dashboard-header">
 
 
@@ -178,7 +183,7 @@ return(
 
 <p>
 
-لوحة التحكم الذكية لإدارة التسويق وصناعة المحتوى
+{t("dashboard.title")}
 
 </p>
 
@@ -244,6 +249,7 @@ key={index}
 }
 
 
+
 </div>
 
 
@@ -258,14 +264,17 @@ key={index}
 
 <h2>
 
-⚡ أدوات الذكاء الاصطناعي
+⚡ {t("dashboard.ai_tools")}
 
 </h2>
 
 
 
 
+
 <div className="quick-grid">
+
+
 
 
 
@@ -277,9 +286,11 @@ onClick={()=>navigate("/create")}
 
 <PenSquare/>
 
-إنشاء منشور AI
+{t("dashboard.create_post")}
 
 </button>
+
+
 
 
 
@@ -293,9 +304,11 @@ onClick={()=>navigate("/image-generator")}
 
 <Image/>
 
-تصميم صورة AI
+{t("dashboard.create_image")}
 
 </button>
+
+
 
 
 
@@ -310,9 +323,11 @@ onClick={()=>navigate("/campaigns")}
 
 <Megaphone/>
 
-إنشاء حملة
+{t("dashboard.create_campaign")}
 
 </button>
+
+
 
 
 
@@ -327,16 +342,19 @@ onClick={()=>navigate("/calendar")}
 
 <CalendarDays/>
 
-تقويم المحتوى
+{t("dashboard.calendar")}
 
 </button>
 
 
 
+
+
 </div>
 
 
 </div>
+
 
 
 
@@ -348,35 +366,42 @@ onClick={()=>navigate("/calendar")}
 <div className="ai-status">
 
 
+
 <h2>
 
-🤖 حالة النظام
+🤖 {t("dashboard.system_status")}
 
 </h2>
 
 
+
 <p>
 
-🟢 AI Engine يعمل
+🟢 {t("dashboard.engine")}
 
 </p>
 
 
+
 <p>
 
-✅ قاعدة البيانات متصلة
+✅ {t("dashboard.database")}
 
 </p>
 
 
+
 <p>
 
-🚀 BrandSocialNova جاهز لإدارة المحتوى
+🚀 {t("dashboard.ready")}
 
 </p>
+
+
 
 
 </div>
+
 
 
 

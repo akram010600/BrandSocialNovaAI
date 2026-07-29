@@ -24,4 +24,22 @@
     "instagram": "جدولة المحتوى وإدارة المنشورات",
     "google": "إدارة الظهور المحلي والتقييمات"
   }
+  ,
+"dashboard": {
+  "title": "لوحة التحكم الذكية لإدارة التسويق وصناعة المحتوى",
+  "total_posts": "إجمالي المنشورات",
+  "published_posts": "المنشورات المنشورة",
+  "likes": "الإعجابات",
+  "comments": "التعليقات",
+  "shares": "المشاركات",
+  "ai_tools": "أدوات الذكاء الاصطناعي",
+  "create_post": "إنشاء منشور AI",
+  "create_image": "تصميم صورة AI",
+  "create_campaign": "إنشاء حملة",
+  "calendar": "تقويم المحتوى",
+  "system_status": "حالة النظام",
+  "engine": "AI Engine يعمل",
+  "database": "قاعدة البيانات متصلة",
+  "ready": "BrandSocialNova جاهز لإدارة المحتوى"
+}
 }
