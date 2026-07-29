@@ -9,7 +9,8 @@ import {
   Megaphone,
   CalendarDays,
   Image,
-  PenSquare
+  PenSquare,
+  BarChart3
 } from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
@@ -26,7 +27,7 @@ const { t } = useTranslation();
 
 
 
-const [stats,setStats]=useState({
+const [stats,setStats] = useState({
 
 total_posts:0,
 
@@ -43,9 +44,7 @@ total_shares:0
 
 
 
-
 async function loadStats(){
-
 
 try{
 
@@ -77,16 +76,11 @@ console.log(error);
 
 
 
-
 useEffect(()=>{
-
 
 loadStats();
 
-
 },[]);
-
-
 
 
 
@@ -96,61 +90,37 @@ const cards=[
 
 
 {
-
 title:t("dashboard.total_posts"),
-
 value:stats.total_posts,
-
-icon:<FileText size={32}/>
-
+icon:<FileText size={28}/>
 },
 
 
-
 {
-
 title:t("dashboard.published_posts"),
-
 value:stats.published_posts,
-
-icon:<Sparkles size={32}/>
-
+icon:<Sparkles size={28}/>
 },
 
 
-
 {
-
 title:t("dashboard.likes"),
-
 value:stats.total_likes,
-
-icon:<Heart size={32}/>
-
+icon:<Heart size={28}/>
 },
 
 
-
 {
-
 title:t("dashboard.comments"),
-
 value:stats.total_comments,
-
-icon:<MessageCircle size={32}/>
-
+icon:<MessageCircle size={28}/>
 },
 
 
-
 {
-
 title:t("dashboard.shares"),
-
 value:stats.total_shares,
-
-icon:<Share2 size={32}/>
-
+icon:<Share2 size={28}/>
 }
 
 
@@ -160,14 +130,44 @@ icon:<Share2 size={32}/>
 
 
 
+const tools=[
+
+{
+title:t("dashboard.create_post"),
+icon:<PenSquare/>,
+path:"/create"
+},
+
+
+{
+title:t("dashboard.create_image"),
+icon:<Image/>,
+path:"/image-generator"
+},
+
+
+{
+title:t("dashboard.create_campaign"),
+icon:<Megaphone/>,
+path:"/campaigns"
+},
+
+
+{
+title:t("dashboard.calendar"),
+icon:<CalendarDays/>,
+path:"/calendar"
+}
+
+];
+
+
+
 
 
 return(
 
-
 <div className="page dashboard">
-
-
 
 
 
@@ -189,8 +189,6 @@ return(
 
 
 </div>
-
-
 
 
 
@@ -220,7 +218,6 @@ key={index}
 </div>
 
 
-
 <div>
 
 <h3>
@@ -236,8 +233,8 @@ key={index}
 
 </h1>
 
-</div>
 
+</div>
 
 
 </div>
@@ -249,9 +246,7 @@ key={index}
 }
 
 
-
 </div>
-
 
 
 
@@ -270,91 +265,46 @@ key={index}
 
 
 
-
-
 <div className="quick-grid">
 
 
+{
 
-
-
-<button
-
-onClick={()=>navigate("/create")}
-
->
-
-<PenSquare/>
-
-{t("dashboard.create_post")}
-
-</button>
-
-
-
-
-
+tools.map((tool,index)=>(
 
 
 <button
 
-onClick={()=>navigate("/image-generator")}
+key={index}
+
+onClick={()=>navigate(tool.path)}
 
 >
 
-<Image/>
 
-{t("dashboard.create_image")}
+{tool.icon}
+
+
+<span>
+
+{tool.title}
+
+</span>
+
 
 </button>
 
 
+))
 
 
-
-
-
-
-<button
-
-onClick={()=>navigate("/campaigns")}
-
->
-
-<Megaphone/>
-
-{t("dashboard.create_campaign")}
-
-</button>
-
-
-
-
-
-
-
-
-<button
-
-onClick={()=>navigate("/calendar")}
-
->
-
-<CalendarDays/>
-
-{t("dashboard.calendar")}
-
-</button>
-
-
-
+}
 
 
 </div>
 
 
 </div>
-
 
 
 
@@ -366,13 +316,11 @@ onClick={()=>navigate("/calendar")}
 <div className="ai-status">
 
 
-
 <h2>
 
 🤖 {t("dashboard.system_status")}
 
 </h2>
-
 
 
 <p>
@@ -382,7 +330,6 @@ onClick={()=>navigate("/calendar")}
 </p>
 
 
-
 <p>
 
 ✅ {t("dashboard.database")}
@@ -390,14 +337,11 @@ onClick={()=>navigate("/calendar")}
 </p>
 
 
-
 <p>
 
 🚀 {t("dashboard.ready")}
 
 </p>
-
-
 
 
 </div>

@@ -7,9 +7,14 @@ import {
   Layers,
 } from "lucide-react";
 
+import { useTranslation } from "react-i18next";
+
 
 
 export default function Campaigns(){
+
+
+const { t } = useTranslation();
 
 
 const [campaigns,setCampaigns]=useState([]);
@@ -27,6 +32,8 @@ const [postsCount,setPostsCount]=useState(5);
 const [loading,setLoading]=useState(false);
 
 const [generating,setGenerating]=useState(null);
+
+
 
 
 
@@ -68,12 +75,13 @@ console.log(error);
 
 
 
+
 async function createCampaign(){
 
 
 if(!business){
 
-alert("اكتب اسم النشاط أولا");
+alert(t("campaigns.write_business"));
 
 return;
 
@@ -124,8 +132,8 @@ status:"draft"
 
 
 
-await loadCampaigns();
 
+await loadCampaigns();
 
 
 setBusiness("");
@@ -134,7 +142,8 @@ setCategory("");
 
 setGoal("");
 
-alert("تم إنشاء الحملة بنجاح 🚀");
+
+alert(t("campaigns.success"));
 
 
 }
@@ -143,7 +152,7 @@ catch(error){
 
 console.log(error);
 
-alert("حدث خطأ");
+alert(t("campaigns.error"));
 
 }
 
@@ -156,6 +165,8 @@ setLoading(false);
 
 
 }
+
+
 
 
 
@@ -186,13 +197,14 @@ method:"POST"
 
 
 
+
 const data = await response.json();
 
 
 
 alert(
 
-`تم إنشاء ${data.count} منشورات بالذكاء الاصطناعي ✅`
+t("campaigns.generated",{count:data.count})
 
 );
 
@@ -222,6 +234,7 @@ setGenerating(null);
 
 
 
+
 useEffect(()=>{
 
 
@@ -236,10 +249,15 @@ loadCampaigns();
 
 
 
+
+
 return(
 
 
 <div className="page">
+
+
+
 
 
 
@@ -248,19 +266,21 @@ return(
 
 <h1>
 
-📢 Campaign AI Builder
+{t("campaigns.title")}
 
 </h1>
 
 
+
 <p>
 
-إنشاء حملات تسويقية كاملة باستخدام الذكاء الاصطناعي
+{t("campaigns.subtitle")}
 
 </p>
 
 
 </div>
+
 
 
 
@@ -274,16 +294,17 @@ return(
 
 <h2>
 
-✨ إنشاء حملة جديدة
+{t("campaigns.create_title")}
 
 </h2>
 
 
 
 
+
 <input
 
-placeholder="اسم النشاط"
+placeholder={t("campaigns.business")}
 
 value={business}
 
@@ -295,9 +316,10 @@ onChange={e=>setBusiness(e.target.value)}
 
 
 
+
 <input
 
-placeholder="المجال"
+placeholder={t("campaigns.category")}
 
 value={category}
 
@@ -309,15 +331,17 @@ onChange={e=>setCategory(e.target.value)}
 
 
 
+
 <input
 
-placeholder="الهدف التسويقي"
+placeholder={t("campaigns.goal")}
 
 value={goal}
 
 onChange={e=>setGoal(e.target.value)}
 
 />
+
 
 
 
@@ -331,6 +355,7 @@ value={platform}
 onChange={e=>setPlatform(e.target.value)}
 
 >
+
 
 <option value="Megaphone">
 
@@ -360,6 +385,7 @@ LinkedIn
 
 
 
+
 <input
 
 type="number"
@@ -368,9 +394,10 @@ value={postsCount}
 
 onChange={e=>setPostsCount(e.target.value)}
 
-placeholder="عدد المنشورات"
+placeholder={t("campaigns.posts_count")}
 
 />
+
 
 
 
@@ -386,7 +413,9 @@ disabled={loading}
 >
 
 
+
 <Megaphone size={20}/>
+
 
 
 {
@@ -395,16 +424,18 @@ loading
 
 ?
 
-"جاري الإنشاء..."
+t("campaigns.loading")
 
 :
 
-"إنشاء الحملة"
+t("campaigns.create")
 
 }
 
 
+
 </button>
+
 
 
 
@@ -417,11 +448,15 @@ loading
 
 
 
+
 <h2>
 
-📂 الحملات السابقة
+{t("campaigns.previous")}
 
 </h2>
+
+
+
 
 
 
@@ -435,6 +470,7 @@ loading
 {
 
 campaigns.map(item=>(
+
 
 
 <div
@@ -457,6 +493,7 @@ key={item.id}
 
 
 
+
 <h2>
 
 {item.business}
@@ -466,13 +503,17 @@ key={item.id}
 
 
 
+
+
 <p>
 
 <Target size={16}/>
 
- الهدف: {item.goal}
+ {t("campaigns.target")}: {item.goal}
 
 </p>
+
+
 
 
 
@@ -482,9 +523,11 @@ key={item.id}
 
 <Layers size={16}/>
 
- المجال: {item.category}
+ {t("campaigns.field")}: {item.category}
 
 </p>
+
+
 
 
 
@@ -494,7 +537,7 @@ key={item.id}
 
 <Megaphone size={16}/>
 
- المنصة: {item.platform}
+ {t("campaigns.platform")}: {item.platform}
 
 </p>
 
@@ -510,8 +553,9 @@ onClick={()=>generateCampaign(item.id)}
 
 >
 
-
 <Sparkles size={18}/>
+
+
 
 
 {
@@ -520,13 +564,14 @@ generating===item.id
 
 ?
 
-"جاري التوليد..."
+t("campaigns.generating")
 
 :
 
-"إنشاء منشورات AI"
+t("campaigns.generate")
 
 }
+
 
 
 
@@ -535,7 +580,10 @@ generating===item.id
 
 
 
+
+
 </div>
+
 
 
 ))
@@ -546,6 +594,8 @@ generating===item.id
 
 
 </div>
+
+
 
 
 

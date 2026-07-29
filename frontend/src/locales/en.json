@@ -1,62 +1,76 @@
 {
   "sidebar": {
     "dashboard": "Dashboard",
-    "create": "Create AI Content",
+    "create": "AI Content Creation",
     "images": "AI Image Generator",
-    "promptGenerator": "Prompt Generator",
-    "promptLibrary": "Prompt Library",
-    "campaigns": "Marketing Campaigns",
-    "calendar": "Content Calendar",
-    "planner": "AI Content Planner",
+    "ai": "Artificial Intelligence",
     "analytics": "Analytics",
-    "integrations": "Service Integrations",
+    "campaigns": "Campaigns",
+    "calendar": "Content Calendar",
+    "library": "Library",
+    "integrations": "Integrations",
     "settings": "Settings"
+  },
+
+  "header": {
+    "welcome": "Welcome 👋",
+    "brand": "BrandSocialNova AI"
+  },
+
+  "dashboard": {
+    "title": "BrandSocialNova AI",
+    "subtitle": "Smart dashboard for marketing and content creation management",
+    "posts": "Total Posts",
+    "published": "Published Posts",
+    "likes": "Likes",
+    "comments": "Comments",
+    "shares": "Shares",
+    "tools": "AI Tools",
+    "create": "Create AI Post",
+    "image": "AI Image Design",
+    "campaign": "Create Campaign",
+    "calendar": "Content Calendar",
+    "status": "System Status"
+  },
+
+  "create": {
+    "title": "AI Content Studio",
+    "subtitle": "Create professional marketing content using AI",
+    "business": "Business Name",
+    "category": "Category",
+    "goal": "Marketing Goal",
+    "generate": "Generate AI Content"
+  },
+
+  "campaigns": {
+    "title": "AI Campaign Builder",
+    "create": "Create New Campaign",
+    "previous": "Previous Campaigns"
+  },
+
+  "calendar": {
+    "title": "Smart Content Calendar",
+    "copy": "Copy Content"
+  },
+
+  "analytics": {
+    "title": "Analytics"
   },
 
   "integrations": {
     "title": "Integrations Center",
-    "subtitle": "Connect BrandSocialNova AI with external marketing platforms",
-    "button": "Connect Service",
-    "canva": "Edit designs directly inside Canva and create professional templates",
-    "freepik": "Access professional images and visual assets",
-    "pinterest": "Analyze trends and save or publish designs",
-    "facebook": "Manage and publish campaigns and posts on Facebook",
-    "instagram": "Schedule content and manage posts",
-    "google": "Manage local visibility and reviews"
+    "subtitle": "Connect BrandSocialNova AI with external marketing platforms"
   }
   ,
-"dashboard": {
-  "title": "Smart dashboard for marketing management and content creation",
-  "total_posts": "Total Posts",
-  "published_posts": "Published Posts",
-  "likes": "Likes",
-  "comments": "Comments",
-  "shares": "Shares",
-  "ai_tools": "AI Tools",
-  "create_post": "Create AI Post",
-  "create_image": "AI Image Design",
-  "create_campaign": "Create Campaign",
-  "calendar": "Content Calendar",
-  "system_status": "System Status",
-  "engine": "AI Engine Running",
-  "database": "Database Connected",
-  "ready": "BrandSocialNova is ready to manage content"
+"planner": {
+  "title": "AI Content Planner",
+  "subtitle": "Create a smart content plan using artificial intelligence",
+  "generate": "Generate Content Plan"
 }
 ,
-"createPost": {
-  "title": "✨ AI Content Studio",
-  "subtitle": "Create professional marketing content using AI",
-  "business": "Business name",
-  "category": "Category example: Restaurant, Nursery, Real Estate",
-  "goal": "Marketing goal",
-  "post_type": "Post type",
-  "offer": "Offer Advertisement",
-  "intro": "Introduction Post",
-  "engagement": "Increase Engagement",
-  "trust": "Build Trust",
-  "create": "Create AI Content",
-  "loading": "⏳ Generating...",
-  "save": "Save Post",
-  "error": "An error occurred"
+"planner": {
+  "title": "AI Content Planner",
+  "subtitle": "Create smart marketing content plans using artificial intelligence",
+  "generate": "Generate Content Plan"
 }
 }

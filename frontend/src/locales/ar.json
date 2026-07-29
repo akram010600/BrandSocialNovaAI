@@ -2,61 +2,72 @@
   "sidebar": {
     "dashboard": "الرئيسية",
     "create": "إنشاء محتوى AI",
-    "images": "مولد الصور AI",
-    "promptGenerator": "مولد البرومت",
-    "promptLibrary": "مكتبة البرومبتات",
-    "campaigns": "الحملات التسويقية",
-    "calendar": "التقويم",
-    "planner": "مخطط المحتوى AI",
+    "images": "مولد الصور",
+    "ai": "الذكاء الاصطناعي",
     "analytics": "التحليلات",
-    "integrations": "الربط مع الخدمات",
+    "campaigns": "الحملات",
+    "calendar": "تقويم المحتوى",
+    "library": "المكتبة",
+    "integrations": "التكاملات",
     "settings": "الإعدادات"
+  },
+
+  "header": {
+    "welcome": "مرحباً 👋",
+    "brand": "BrandSocialNova AI"
+  },
+
+  "dashboard": {
+    "title": "BrandSocialNova AI",
+    "subtitle": "لوحة التحكم الذكية لإدارة التسويق وصناعة المحتوى",
+    "total_posts": "إجمالي المنشورات",
+    "published_posts": "المنشورات المنشورة",
+    "likes": "الإعجابات",
+    "comments": "التعليقات",
+    "shares": "المشاركات",
+    "ai_tools": "أدوات الذكاء الاصطناعي",
+    "create_post": "إنشاء منشور AI",
+    "create_image": "تصميم صورة AI",
+    "create_campaign": "إنشاء حملة",
+    "calendar": "تقويم المحتوى",
+    "system_status": "حالة النظام",
+    "engine": "AI Engine يعمل",
+    "database": "قاعدة البيانات متصلة",
+    "ready": "BrandSocialNova جاهز لإدارة المحتوى"
+  },
+
+  "create": {
+    "title": "استوديو صناعة المحتوى AI",
+    "subtitle": "إنشاء محتوى تسويقي احترافي بالذكاء الاصطناعي",
+    "business": "اسم النشاط",
+    "category": "المجال",
+    "goal": "الهدف التسويقي",
+    "generate": "إنشاء المحتوى AI"
+  },
+
+  "campaigns": {
+    "title": "منشئ الحملات التسويقية AI",
+    "create": "إنشاء حملة جديدة",
+    "previous": "الحملات السابقة"
+  },
+
+  "calendar": {
+    "title": "تقويم المحتوى الذكي",
+    "copy": "نسخ المحتوى"
+  },
+
+  "analytics": {
+    "title": "التحليلات"
   },
 
   "integrations": {
     "title": "مركز التكاملات",
-    "subtitle": "ربط BrandSocialNova AI مع منصات التسويق الخارجية",
-    "button": "ربط الخدمة",
-    "canva": "تعديل التصاميم مباشرة داخل Canva وإنشاء قوالب احترافية",
-    "freepik": "الوصول للصور والعناصر البصرية الاحترافية",
-    "pinterest": "تحليل الترندات وحفظ ونشر التصميمات",
-    "facebook": "إدارة ونشر الحملات والمنشورات على فيسبوك",
-    "instagram": "جدولة المحتوى وإدارة المنشورات",
-    "google": "إدارة الظهور المحلي والتقييمات"
+    "subtitle": "ربط BrandSocialNova AI مع منصات التسويق الخارجية"
+  },
+
+  "planner": {
+    "title": "مخطط المحتوى الذكي AI",
+    "subtitle": "إنشاء خطة محتوى تسويقية باستخدام الذكاء الاصطناعي",
+    "generate": "إنشاء خطة المحتوى"
   }
-  ,
-"dashboard": {
-  "title": "لوحة التحكم الذكية لإدارة التسويق وصناعة المحتوى",
-  "total_posts": "إجمالي المنشورات",
-  "published_posts": "المنشورات المنشورة",
-  "likes": "الإعجابات",
-  "comments": "التعليقات",
-  "shares": "المشاركات",
-  "ai_tools": "أدوات الذكاء الاصطناعي",
-  "create_post": "إنشاء منشور AI",
-  "create_image": "تصميم صورة AI",
-  "create_campaign": "إنشاء حملة",
-  "calendar": "تقويم المحتوى",
-  "system_status": "حالة النظام",
-  "engine": "AI Engine يعمل",
-  "database": "قاعدة البيانات متصلة",
-  "ready": "BrandSocialNova جاهز لإدارة المحتوى"
-}
-,
-"createPost": {
-  "title": "✨ استوديو المحتوى بالذكاء الاصطناعي",
-  "subtitle": "إنشاء محتوى تسويقي احترافي بالذكاء الاصطناعي",
-  "business": "اسم النشاط",
-  "category": "المجال مثال: مطعم، حضانة، عقارات",
-  "goal": "الهدف التسويقي",
-  "post_type": "نوع المنشور",
-  "offer": "إعلان عرض",
-  "intro": "منشور تعريفي",
-  "engagement": "زيادة تفاعل",
-  "trust": "بناء ثقة",
-  "create": "إنشاء المحتوى AI",
-  "loading": "⏳ جاري الإنشاء...",
-  "save": "حفظ المنشور",
-  "error": "حدث خطأ"
-}
 }

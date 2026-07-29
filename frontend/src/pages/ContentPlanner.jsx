@@ -1,275 +1,307 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Sparkles, CalendarDays } from "lucide-react";
 
 
-export default function ContentPlanner(){
+export default function ContentPlanner() {
 
 
-const [business,setBusiness]=useState("");
+  const { t } = useTranslation();
 
-const [category,setCategory]=useState("");
 
-const [goal,setGoal]=useState("");
+  const [business, setBusiness] = useState("");
+  const [category, setCategory] = useState("");
+  const [goal, setGoal] = useState("");
+  const [days, setDays] = useState(30);
 
-const [days,setDays]=useState(30);
+  const [plan, setPlan] = useState([]);
 
+  const [loading, setLoading] = useState(false);
 
-const [plan,setPlan]=useState([]);
 
-const [loading,setLoading]=useState(false);
 
 
+  async function generatePlan() {
 
 
+    setLoading(true);
 
-async function generatePlan(){
 
+    try {
 
-setLoading(true);
 
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/content-plan",
+        {
+          method: "POST",
 
-try{
+          headers: {
+            "Content-Type": "application/json"
+          },
 
+          body: JSON.stringify({
 
-const response = await fetch(
+            business,
 
-"http://127.0.0.1:8000/api/content-plan",
+            category,
 
-{
+            goal,
 
-method:"POST",
+            days: Number(days)
 
-headers:{
+          })
 
-"Content-Type":"application/json"
+        }
+      );
 
-},
 
 
-body:JSON.stringify({
+      const data = await response.json();
 
-business,
 
-category,
+      setPlan(data.plan || []);
 
-goal,
 
-days:Number(days)
 
-})
+    }
 
+    catch(error) {
 
-}
 
-);
+      console.error(error);
 
+      alert("حدث خطأ أثناء إنشاء الخطة");
 
 
-const data = await response.json();
+    }
 
+    finally {
 
-setPlan(data.plan || []);
 
+      setLoading(false);
 
 
-}
+    }
 
-catch(error){
 
+  }
 
-console.error(error);
 
-alert(
-"حدث خطأ أثناء إنشاء الخطة"
-);
 
 
-}
 
-finally{
+  return (
 
+    <div className="page">
 
-setLoading(false);
 
+      <div className="planner-header">
 
-}
 
+        <h1>
 
-}
+          <Sparkles size={28}/>
 
+          {t("planner.title")}
 
+        </h1>
 
 
+        <p>
 
-return(
+          {t("planner.subtitle")}
 
+        </p>
 
-<div className="page">
 
+      </div>
 
-<h1>
-✨ AI Content Planner
-</h1>
 
 
-<p>
-إنشاء خطة محتوى ذكية باستخدام الذكاء الاصطناعي
-</p>
 
 
+      <div className="form-card">
 
-<input
 
-placeholder="اسم النشاط"
+        <input
 
-value={business}
+          placeholder={t("create.business")}
 
-onChange={(e)=>setBusiness(e.target.value)}
+          value={business}
 
-/>
+          onChange={(e)=>setBusiness(e.target.value)}
 
+        />
 
 
-<input
 
-placeholder="المجال"
+        <input
 
-value={category}
+          placeholder={t("create.category")}
 
-onChange={(e)=>setCategory(e.target.value)}
+          value={category}
 
-/>
+          onChange={(e)=>setCategory(e.target.value)}
 
+        />
 
 
-<input
 
-placeholder="الهدف التسويقي"
+        <input
 
-value={goal}
+          placeholder={t("create.goal")}
 
-onChange={(e)=>setGoal(e.target.value)}
+          value={goal}
 
-/>
+          onChange={(e)=>setGoal(e.target.value)}
 
+        />
 
 
-<input
 
-type="number"
+        <input
 
-value={days}
+          type="number"
 
-onChange={(e)=>setDays(e.target.value)}
+          value={days}
 
-/>
+          min="1"
 
+          max="365"
 
+          onChange={(e)=>setDays(e.target.value)}
 
-<button
+        />
 
-onClick={generatePlan}
 
-disabled={loading}
 
->
 
 
-{
+        <button
 
-loading
+          onClick={generatePlan}
 
-?
+          disabled={loading}
 
-"⏳ جاري إنشاء الخطة..."
+        >
 
-:
 
-"🚀 إنشاء خطة المحتوى"
+          {
 
-}
+            loading
 
+            ?
 
-</button>
+            "⏳ جاري إنشاء الخطة..."
 
+            :
 
+            <>
 
+              🚀 {t("planner.generate")}
 
+            </>
 
-<hr/>
 
+          }
 
 
+        </button>
 
 
-{
 
-plan.map((item)=>(
+      </div>
 
 
-<div
 
-key={item.day}
 
-style={{
 
-border:"1px solid #ddd",
 
-padding:"20px",
 
-margin:"15px 0",
+      {
 
-borderRadius:"15px"
+        plan.length > 0 &&
 
-}}
+        <div className="planner-results">
 
->
 
+          {
 
-<h2>
+            plan.map((item)=>(
 
-📅 اليوم {item.day}
 
-</h2>
+              <div
 
+                key={item.day}
 
-<h3>
+                className="content-card"
 
-{item.type}
+              >
 
-</h3>
 
+                <div className="card-top">
 
-<h4>
 
-{item.title}
+                  <span>
 
-</h4>
+                    <CalendarDays size={18}/>
 
+                    اليوم {item.day}
 
+                  </span>
 
-<p>
 
-{item.content}
+                </div>
 
-</p>
 
 
 
-</div>
 
+                <h2>
 
-))
+                  {item.title}
 
+                </h2>
 
-}
 
 
+                <h3>
 
+                  {item.type}
 
-</div>
+                </h3>
 
 
-);
+
+                <p>
+
+                  {item.content}
+
+                </p>
+
+
+
+              </div>
+
+
+            ))
+
+
+          }
+
+
+        </div>
+
+
+      }
+
+
+
+
+    </div>
+
+
+  );
 
 
 }
