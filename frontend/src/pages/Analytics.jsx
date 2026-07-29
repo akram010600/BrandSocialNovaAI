@@ -1,56 +1,209 @@
 import { useEffect, useState } from "react";
-import Header from "../components/Header.jsx";
-import { api } from "../api/api.js";
 
-export default function Analytics() {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState("");
 
-  useEffect(() => {
-    api.getAnalytics().then(setData).catch((e) => setError(e.message));
-  }, []);
+export default function Analytics(){
+
+
+  const [data,setData] = useState(null);
+
+  const [loading,setLoading] = useState(true);
+
+
+
+  async function loadAnalytics(){
+
+
+    try{
+
+
+      const response = await fetch(
+        "http://127.0.0.1:8000/api/analytics"
+      );
+
+
+      const result = await response.json();
+
+
+      setData(result);
+
+
+    }
+
+    catch(error){
+
+      console.error(error);
+
+      alert("خطأ في تحميل التحليلات");
+
+    }
+
+    finally{
+
+      setLoading(false);
+
+    }
+
+  }
+
+
+
+
+  useEffect(()=>{
+
+
+    loadAnalytics();
+
+
+  },[]);
+
+
+
+
+  if(loading){
+
+    return (
+
+      <div className="page">
+
+        <h2>
+          ⏳ جاري تحميل التحليلات...
+        </h2>
+
+      </div>
+
+    );
+
+  }
+
+
+
+
 
   return (
-    <div className="main">
-      <Header title="التحليلات" />
-      <div className="content">
-        {error && <p style={{ color: "#DC2626" }}>{error}</p>}
-        {!data && !error && <p>جاري التحميل...</p>}
 
-        {data && (
-          <>
-            <div className="stats-grid">
-              <div className="stat-card">
-                <div className="value">{data.total_posts}</div>
-                <div className="label">إجمالي المنشورات</div>
-              </div>
-              <div className="stat-card">
-                <div className="value">{data.total_likes}</div>
-                <div className="label">إعجابات</div>
-              </div>
-              <div className="stat-card">
-                <div className="value">{data.total_comments}</div>
-                <div className="label">تعليقات</div>
-              </div>
-              <div className="stat-card">
-                <div className="value">{data.total_shares}</div>
-                <div className="label">مشاركات</div>
-              </div>
-            </div>
+    <div className="page">
 
-            <div className="post-card">
-              <h3 style={{ marginBottom: 12 }}>توزيع المنشورات حسب المنصة</h3>
-              {data.by_platform.length === 0 && <p style={{ color: "#6B7280" }}>لا توجد بيانات بعد.</p>}
-              {data.by_platform.map((item) => (
-                <div key={item.platform} style={{ display: "flex", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid #F3F4F6" }}>
-                  <span>{item.platform}</span>
-                  <strong>{item.count}</strong>
-                </div>
-              ))}
-            </div>
-          </>
-        )}
+
+      <h1>
+        📊 التحليلات
+      </h1>
+
+
+
+      <div
+        style={{
+          display:"grid",
+          gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))",
+          gap:"20px"
+        }}
+      >
+
+
+        <Card
+
+          title="📊 عدد المنشورات"
+
+          value={data.total_posts}
+
+        />
+
+
+
+        <Card
+
+          title="✅ المنشورات المنشورة"
+
+          value={data.published_posts}
+
+        />
+
+
+
+        <Card
+
+          title="❤️ الإعجابات"
+
+          value={data.total_likes}
+
+        />
+
+
+
+        <Card
+
+          title="💬 التعليقات"
+
+          value={data.total_comments}
+
+        />
+
+
+
+        <Card
+
+          title="🔁 المشاركات"
+
+          value={data.total_shares}
+
+        />
+
+
       </div>
+
+
+
     </div>
+
   );
+
+
+}
+
+
+
+
+function Card({title,value}){
+
+
+return (
+
+<div
+
+style={{
+
+background:"#fff",
+
+padding:"25px",
+
+borderRadius:"20px",
+
+boxShadow:"0 5px 20px #ddd",
+
+textAlign:"center"
+
+}}
+
+>
+
+
+<h3>
+
+{title}
+
+</h3>
+
+
+<h1>
+
+{value}
+
+</h1>
+
+
+</div>
+
+
+);
+
+
 }

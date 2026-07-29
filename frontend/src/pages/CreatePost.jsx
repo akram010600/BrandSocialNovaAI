@@ -1,337 +1,288 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Header from "../components/Header.jsx";
-import { api } from "../api/api.js";
 
+import {
+  Sparkles,
+  Wand2,
+  Save
+} from "lucide-react";
 
-export default function CreatePost() {
 
 
-  const [form, setForm] = useState({
+export default function CreatePost(){
 
-    title: "",
-    content: "",
-    platform: "facebook",
-    status: "draft",
 
-  });
+const [business,setBusiness]=useState("");
 
+const [category,setCategory]=useState("");
 
+const [goal,setGoal]=useState("");
 
-  const [data, setData] = useState({
+const [postType,setPostType]=useState("");
 
-    business: "",
-    category: "تعليم",
-    goal: "زيادة العملاء",
-    post_type: "منشور تعريفي",
-    platform: "facebook",
+const [platform,setPlatform]=useState("facebook");
 
-  });
 
+const [result,setResult]=useState(null);
 
+const [loading,setLoading]=useState(false);
 
-  const [loading, setLoading] = useState(false);
 
-  const [error, setError] = useState("");
 
-  const navigate = useNavigate();
 
 
+async function generate(){
 
-  const handleChange = (e) => {
 
-    setForm({
+setLoading(true);
 
-      ...form,
 
-      [e.target.name]: e.target.value
+try{
 
-    });
 
-  };
+const response = await fetch(
 
+"http://127.0.0.1:8000/api/generate",
 
+{
 
-  const handleDataChange = (e) => {
+method:"POST",
 
-    setData({
+headers:{
 
-      ...data,
+"Content-Type":"application/json"
 
-      [e.target.name]: e.target.value
+},
 
-    });
 
-  };
+body:JSON.stringify({
 
+business,
 
+category,
 
-  const handleGenerate = async () => {
+goal,
 
+post_type:postType,
 
-    if (!data.business.trim()) {
+platform
 
-      setError("اكتب اسم النشاط أولاً");
+})
 
-      return;
 
-    }
+}
 
+);
 
 
-    setLoading(true);
 
-    setError("");
+const data = await response.json();
 
 
+setResult(data);
 
-    try {
 
+}
 
-      const result = await api.generateContent(data);
+catch(error){
 
+console.log(error);
 
+alert("حدث خطأ");
 
-      setForm({
+}
 
-        ...form,
+finally{
 
-        title: result.title,
+setLoading(false);
 
-        content: result.content,
+}
 
-        platform: data.platform
 
-      });
+}
 
 
 
-    } catch(err) {
 
 
-      setError(err.message);
 
+return(
 
-    } finally {
 
+<div className="page">
 
-      setLoading(false);
 
+<h1>
 
-    }
+✨ AI Content Studio
 
+</h1>
 
-  };
 
+<p>
 
-
-
-  const handleSubmit = async(e)=>{
-
-
-    e.preventDefault();
-
-
-    if(!form.title || !form.content){
-
-      setError("قم بتوليد المحتوى أولاً");
-
-      return;
-
-    }
-
-
-
-    try{
-
-
-      await api.createPost(form);
-
-
-      navigate("/");
-
-
-    }catch(err){
-
-
-      setError(err.message);
-
-
-    }
-
-
-  };
-
-
-
-
-return (
-
-<div className="main">
-
-
-<Header title="إنشاء منشور جديد"/>
-
-
-
-<div className="content">
-
-
-
-{error && (
-
-<p style={{color:"red"}}>
-
-{error}
+إنشاء محتوى تسويقي احترافي بالذكاء الاصطناعي
 
 </p>
 
-)}
 
 
 
 
-<div className="post-card">
-
-
-<h3>
-✨ إعداد الحملة الذكية
-</h3>
-
+<div className="form-card">
 
 
 <input
 
-name="business"
+placeholder="اسم النشاط"
 
-placeholder="اسم النشاط مثال: مدرسة النخبة"
+value={business}
 
-value={data.business}
-
-onChange={handleDataChange}
+onChange={e=>setBusiness(e.target.value)}
 
 />
 
 
 
+<input
+
+placeholder="المجال مثال: مطعم، حضانة، عقارات"
+
+value={category}
+
+onChange={e=>setCategory(e.target.value)}
+
+/>
+
+
+
+
+<input
+
+placeholder="الهدف التسويقي"
+
+value={goal}
+
+onChange={e=>setGoal(e.target.value)}
+
+/>
+
+
+
+
 <select
 
-name="category"
+value={postType}
 
-value={data.category}
-
-onChange={handleDataChange}
+onChange={e=>setPostType(e.target.value)}
 
 >
 
-<option>تعليم</option>
 
-<option>حضانة</option>
+<option>
 
-<option>مطاعم</option>
+نوع المنشور
 
-<option>عقارات</option>
+</option>
 
-<option>خدمات</option>
+
+<option>
+
+إعلان عرض
+
+</option>
+
+
+<option>
+
+منشور تعريفي
+
+</option>
+
+
+<option>
+
+زيادة تفاعل
+
+</option>
+
+
+<option>
+
+بناء ثقة
+
+</option>
 
 
 </select>
 
 
 
-<select
-
-name="goal"
-
-value={data.goal}
-
-onChange={handleDataChange}
-
->
-
-
-<option>زيادة العملاء</option>
-
-<option>زيادة المبيعات</option>
-
-<option>بناء الثقة</option>
-
-<option>زيادة التسجيل</option>
-
-
-</select>
-
 
 
 <select
 
-name="post_type"
+value={platform}
 
-value={data.post_type}
-
-onChange={handleDataChange}
-
->
-
-
-<option>منشور تعريفي</option>
-
-<option>إعلان عرض</option>
-
-<option>خصم</option>
-
-<option>نصيحة</option>
-
-
-</select>
-
-
-
-
-<select
-
-name="platform"
-
-value={data.platform}
-
-onChange={handleDataChange}
+onChange={e=>setPlatform(e.target.value)}
 
 >
 
 
 <option value="facebook">
+
 Facebook
+
 </option>
 
 
 <option value="instagram">
+
 Instagram
+
 </option>
 
 
 <option value="linkedin">
+
 LinkedIn
+
 </option>
 
 
 </select>
+
 
 
 
 
 <button
 
-onClick={handleGenerate}
-
-disabled={loading}
+onClick={generate}
 
 >
 
 
-{loading ? "جاري الإنشاء..." : "✨ توليد المحتوى"}
+{
+
+loading ?
+
+"⏳ جاري الإنشاء..."
+
+:
+
+<>
+
+<Wand2 size={20}/>
+
+إنشاء المحتوى AI
+
+</>
+
+}
 
 
 </button>
+
 
 
 </div>
@@ -340,93 +291,72 @@ disabled={loading}
 
 
 
-<form
-
-className="create-form post-card"
-
-onSubmit={handleSubmit}
-
->
 
 
+{
 
-<input
+result &&
 
-name="title"
+<div className="result-card">
 
-placeholder="العنوان"
 
-value={form.title}
+<h2>
 
-onChange={handleChange}
+{result.title}
+
+</h2>
+
+
+<p>
+
+{result.content}
+
+</p>
+
+
+
+<img
+
+src={
+"http://127.0.0.1:8000"+result.image
+}
+
+style={{
+
+width:"400px",
+
+borderRadius:"20px"
+
+}}
+
 
 />
 
 
 
-<textarea
-
-name="content"
-
-rows="8"
-
-placeholder="المحتوى"
-
-value={form.content}
-
-onChange={handleChange}
-
-/>
-
-
-
-
-<select
-
-name="platform"
-
-value={form.platform}
-
-onChange={handleChange}
-
->
-
-
-<option value="facebook">
-Facebook
-</option>
-
-
-<option value="instagram">
-Instagram
-</option>
-
-
-<option value="linkedin">
-LinkedIn
-</option>
-
-
-</select>
-
-
+<br/>
 
 
 <button>
+
+
+<Save size={18}/>
 
 حفظ المنشور
 
 </button>
 
 
-</form>
+
+</div>
+
+
+}
 
 
 
 </div>
 
-
-</div>
 
 );
 

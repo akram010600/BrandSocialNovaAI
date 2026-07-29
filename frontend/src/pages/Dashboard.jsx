@@ -1,58 +1,391 @@
 import { useEffect, useState } from "react";
-import Header from "../components/Header.jsx";
-import PostCard from "../components/PostCard.jsx";
-import { api } from "../api/api.js";
 
-export default function Dashboard() {
-  const [posts, setPosts] = useState([]);
-  const [analytics, setAnalytics] = useState(null);
-  const [error, setError] = useState("");
+import {
+  FileText,
+  Heart,
+  MessageCircle,
+  Share2,
+  Sparkles,
+  Megaphone,
+  CalendarDays,
+  Image,
+  PenSquare
+} from "lucide-react";
 
-  const load = () => {
-    api.getPosts().then(setPosts).catch((e) => setError(e.message));
-    api.getAnalytics().then(setAnalytics).catch((e) => setError(e.message));
-  };
+import { useNavigate } from "react-router-dom";
 
-  useEffect(load, []);
 
-  const handleDelete = async (id) => {
-    await api.deletePost(id);
-    load();
-  };
 
-  return (
-    <div className="main">
-      <Header title="لوحة التحكم" />
-      <div className="content">
-        {error && <p style={{ color: "#DC2626" }}>{error}</p>}
+export default function Dashboard(){
 
-        {analytics && (
-          <div className="stats-grid">
-            <div className="stat-card">
-              <div className="value">{analytics.total_posts}</div>
-              <div className="label">إجمالي المنشورات</div>
-            </div>
-            <div className="stat-card">
-              <div className="value">{analytics.published_posts}</div>
-              <div className="label">تم نشرها</div>
-            </div>
-            <div className="stat-card">
-              <div className="value">{analytics.total_likes}</div>
-              <div className="label">إجمالي الإعجابات</div>
-            </div>
-            <div className="stat-card">
-              <div className="value">{analytics.total_comments}</div>
-              <div className="label">إجمالي التعليقات</div>
-            </div>
-          </div>
-        )}
 
-        <h3 style={{ marginBottom: 12 }}>أحدث المنشورات</h3>
-        {posts.length === 0 && <p style={{ color: "#6B7280" }}>لسه مفيش منشورات، جرب تنشئ واحد من صفحة "إنشاء منشور".</p>}
-        {posts.map((post) => (
-          <PostCard key={post.id} post={post} onDelete={handleDelete} />
-        ))}
-      </div>
-    </div>
-  );
+const navigate = useNavigate();
+
+
+
+const [stats,setStats]=useState({
+
+total_posts:0,
+
+published_posts:0,
+
+total_likes:0,
+
+total_comments:0,
+
+total_shares:0
+
+});
+
+
+
+
+
+async function loadStats(){
+
+
+try{
+
+
+const response = await fetch(
+
+"http://127.0.0.1:8000/api/analytics"
+
+);
+
+
+const data = await response.json();
+
+
+setStats(data);
+
+
+}
+
+catch(error){
+
+console.log(error);
+
+}
+
+
+}
+
+
+
+
+
+useEffect(()=>{
+
+
+loadStats();
+
+
+},[]);
+
+
+
+
+
+
+
+const cards=[
+
+
+{
+
+title:"إجمالي المنشورات",
+
+value:stats.total_posts,
+
+icon:<FileText size={32}/>
+
+},
+
+
+
+{
+
+title:"المنشورات المنشورة",
+
+value:stats.published_posts,
+
+icon:<Sparkles size={32}/>
+
+},
+
+
+
+{
+
+title:"الإعجابات",
+
+value:stats.total_likes,
+
+icon:<Heart size={32}/>
+
+},
+
+
+
+{
+
+title:"التعليقات",
+
+value:stats.total_comments,
+
+icon:<MessageCircle size={32}/>
+
+},
+
+
+
+{
+
+title:"المشاركات",
+
+value:stats.total_shares,
+
+icon:<Share2 size={32}/>
+
+}
+
+
+];
+
+
+
+
+
+
+
+return(
+
+
+<div className="page dashboard">
+
+
+
+<div className="dashboard-header">
+
+
+<h1>
+
+🚀 BrandSocialNova AI
+
+</h1>
+
+
+<p>
+
+لوحة التحكم الذكية لإدارة التسويق وصناعة المحتوى
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div className="dashboard-grid">
+
+
+{
+
+cards.map((item,index)=>(
+
+
+<div
+
+className="stat-card"
+
+key={index}
+
+>
+
+
+<div className="stat-icon">
+
+{item.icon}
+
+</div>
+
+
+
+<div>
+
+<h3>
+
+{item.title}
+
+</h3>
+
+
+<h1>
+
+{item.value}
+
+</h1>
+
+</div>
+
+
+
+</div>
+
+
+))
+
+
+}
+
+
+</div>
+
+
+
+
+
+
+
+
+<div className="quick-section">
+
+
+<h2>
+
+⚡ أدوات الذكاء الاصطناعي
+
+</h2>
+
+
+
+
+<div className="quick-grid">
+
+
+
+<button
+
+onClick={()=>navigate("/create")}
+
+>
+
+<PenSquare/>
+
+إنشاء منشور AI
+
+</button>
+
+
+
+
+
+<button
+
+onClick={()=>navigate("/image-generator")}
+
+>
+
+<Image/>
+
+تصميم صورة AI
+
+</button>
+
+
+
+
+
+
+<button
+
+onClick={()=>navigate("/campaigns")}
+
+>
+
+<Megaphone/>
+
+إنشاء حملة
+
+</button>
+
+
+
+
+
+
+<button
+
+onClick={()=>navigate("/calendar")}
+
+>
+
+<CalendarDays/>
+
+تقويم المحتوى
+
+</button>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div className="ai-status">
+
+
+<h2>
+
+🤖 حالة النظام
+
+</h2>
+
+
+<p>
+
+🟢 AI Engine يعمل
+
+</p>
+
+
+<p>
+
+✅ قاعدة البيانات متصلة
+
+</p>
+
+
+<p>
+
+🚀 BrandSocialNova جاهز لإدارة المحتوى
+
+</p>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+);
+
+
 }

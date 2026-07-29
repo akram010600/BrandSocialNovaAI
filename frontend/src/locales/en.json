@@ -1,0 +1,27 @@
+{
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "create": "Create AI Content",
+    "images": "AI Image Generator",
+    "promptGenerator": "Prompt Generator",
+    "promptLibrary": "Prompt Library",
+    "campaigns": "Marketing Campaigns",
+    "calendar": "Content Calendar",
+    "planner": "AI Content Planner",
+    "analytics": "Analytics",
+    "integrations": "Service Integrations",
+    "settings": "Settings"
+  },
+
+  "integrations": {
+    "title": "Integrations Center",
+    "subtitle": "Connect BrandSocialNova AI with external marketing platforms",
+    "button": "Connect Service",
+    "canva": "Edit designs directly inside Canva and create professional templates",
+    "freepik": "Access professional images and visual assets",
+    "pinterest": "Analyze trends and save or publish designs",
+    "facebook": "Manage and publish campaigns and posts on Facebook",
+    "instagram": "Schedule content and manage posts",
+    "google": "Manage local visibility and reviews"
+  }
+}
