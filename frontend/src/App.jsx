@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 
 import Sidebar from "./components/Sidebar.jsx";
+import Header from "./components/Header.jsx";
 
 
 // Pages
@@ -33,23 +34,13 @@ export default function App() {
     document.documentElement.dir =
       i18n.language === "ar" ? "rtl" : "ltr";
 
+
     document.documentElement.lang =
       i18n.language;
 
+
   }, [i18n.language]);
 
-
-
-
-
-  const changeLanguage = () => {
-
-    const newLanguage =
-      i18n.language === "ar" ? "en" : "ar";
-
-    i18n.changeLanguage(newLanguage);
-
-  };
 
 
 
@@ -67,25 +58,7 @@ export default function App() {
       <main className="main-content">
 
 
-        <button
-          onClick={changeLanguage}
-          style={{
-            position: "fixed",
-            top: "20px",
-            right: "20px",
-            zIndex: 1000,
-            padding: "8px 14px",
-            borderRadius: "10px",
-            border: "none",
-            cursor: "pointer",
-            background: "#111827",
-            color: "#ffffff",
-            fontSize: "14px"
-          }}
-        >
-          {i18n.language === "ar" ? "English" : "العربية"}
-        </button>
-
+        <Header title="BrandSocialNova AI" />
 
 
 
