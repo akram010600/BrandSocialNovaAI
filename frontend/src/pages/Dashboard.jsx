@@ -10,7 +10,7 @@ import {
   CalendarDays,
   Image,
   PenSquare,
-  BarChart3
+  Activity
 } from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
@@ -26,20 +26,16 @@ const navigate = useNavigate();
 const { t } = useTranslation();
 
 
-
-const [stats,setStats] = useState({
+const [stats,setStats]=useState({
 
 total_posts:0,
-
 published_posts:0,
-
 total_likes:0,
-
 total_comments:0,
-
 total_shares:0
 
 });
+
 
 
 
@@ -48,16 +44,12 @@ async function loadStats(){
 
 try{
 
-
 const response = await fetch(
-
 "http://127.0.0.1:8000/api/analytics"
-
 );
 
 
 const data = await response.json();
-
 
 setStats(data);
 
@@ -69,7 +61,6 @@ catch(error){
 console.log(error);
 
 }
-
 
 }
 
@@ -86,80 +77,42 @@ loadStats();
 
 
 
-const cards=[
 
+const cards=[
 
 {
 title:t("dashboard.total_posts"),
 value:stats.total_posts,
-icon:<FileText size={28}/>
+icon:<FileText/>
 },
-
 
 {
 title:t("dashboard.published_posts"),
 value:stats.published_posts,
-icon:<Sparkles size={28}/>
+icon:<Sparkles/>
 },
-
 
 {
 title:t("dashboard.likes"),
 value:stats.total_likes,
-icon:<Heart size={28}/>
+icon:<Heart/>
 },
-
 
 {
 title:t("dashboard.comments"),
 value:stats.total_comments,
-icon:<MessageCircle size={28}/>
+icon:<MessageCircle/>
 },
-
 
 {
 title:t("dashboard.shares"),
 value:stats.total_shares,
-icon:<Share2 size={28}/>
-}
-
-
-];
-
-
-
-
-
-const tools=[
-
-{
-title:t("dashboard.create_post"),
-icon:<PenSquare/>,
-path:"/create"
-},
-
-
-{
-title:t("dashboard.create_image"),
-icon:<Image/>,
-path:"/image-generator"
-},
-
-
-{
-title:t("dashboard.create_campaign"),
-icon:<Megaphone/>,
-path:"/campaigns"
-},
-
-
-{
-title:t("dashboard.calendar"),
-icon:<CalendarDays/>,
-path:"/calendar"
+icon:<Share2/>
 }
 
 ];
+
+
 
 
 
@@ -167,24 +120,22 @@ path:"/calendar"
 
 return(
 
-<div className="page dashboard">
+<div className="dashboard">
 
 
 
-<div className="dashboard-header">
+<section className="hero">
 
+
+<div>
 
 <h1>
-
 🚀 BrandSocialNova AI
-
 </h1>
 
 
 <p>
-
-{t("dashboard.title")}
-
+{t("dashboard.subtitle")}
 </p>
 
 
@@ -192,9 +143,24 @@ return(
 
 
 
+<div className="ai-badge">
+
+🟢 AI Engine Active
+
+</div>
 
 
-<div className="dashboard-grid">
+
+</section>
+
+
+
+
+
+
+
+
+<section className="stats-grid">
 
 
 {
@@ -202,13 +168,7 @@ return(
 cards.map((item,index)=>(
 
 
-<div
-
-className="stat-card"
-
-key={index}
-
->
+<div className="stat-card" key={index}>
 
 
 <div className="stat-icon">
@@ -218,23 +178,21 @@ key={index}
 </div>
 
 
+
 <div>
 
 <h3>
-
 {item.title}
-
 </h3>
 
 
 <h1>
-
 {item.value}
-
 </h1>
 
 
 </div>
+
 
 
 </div>
@@ -242,11 +200,10 @@ key={index}
 
 ))
 
-
 }
 
 
-</div>
+</section>
 
 
 
@@ -254,7 +211,8 @@ key={index}
 
 
 
-<div className="quick-section">
+
+<section className="quick-section">
 
 
 <h2>
@@ -268,43 +226,54 @@ key={index}
 <div className="quick-grid">
 
 
-{
 
-tools.map((tool,index)=>(
+<button onClick={()=>navigate("/create")}>
 
+<PenSquare/>
 
-<button
-
-key={index}
-
-onClick={()=>navigate(tool.path)}
-
->
-
-
-{tool.icon}
-
-
-<span>
-
-{tool.title}
-
-</span>
-
+{t("dashboard.create_post")}
 
 </button>
 
 
-))
 
 
-}
+<button onClick={()=>navigate("/image-generator")}>
+
+<Image/>
+
+{t("dashboard.create_image")}
+
+</button>
+
+
+
+
+<button onClick={()=>navigate("/campaigns")}>
+
+<Megaphone/>
+
+{t("dashboard.create_campaign")}
+
+</button>
+
+
+
+
+<button onClick={()=>navigate("/calendar")}>
+
+<CalendarDays/>
+
+{t("dashboard.calendar")}
+
+</button>
+
 
 
 </div>
 
 
-</div>
+</section>
 
 
 
@@ -313,38 +282,43 @@ onClick={()=>navigate(tool.path)}
 
 
 
-<div className="ai-status">
+
+<section className="system-card">
 
 
 <h2>
 
-🤖 {t("dashboard.system_status")}
+<Activity/>
+
+ AI System Status
 
 </h2>
 
 
-<p>
 
-🟢 {t("dashboard.engine")}
+<div>
 
-</p>
-
-
-<p>
-
-✅ {t("dashboard.database")}
-
-</p>
-
-
-<p>
-
-🚀 {t("dashboard.ready")}
-
-</p>
-
+✅ Content Engine Ready
 
 </div>
+
+
+<div>
+
+✅ Database Connected
+
+</div>
+
+
+<div>
+
+🚀 Marketing Automation Active
+
+</div>
+
+
+
+</section>
 
 
 

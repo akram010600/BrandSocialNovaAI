@@ -1,0 +1,231 @@
+/* =====================
+   BrandSocialNova UI
+   Components System
+===================== */
+
+
+/* Layout */
+
+.app-layout{
+display:flex;
+min-height:100vh;
+background:#f8fafc;
+}
+
+
+/* Sidebar */
+
+.sidebar{
+
+width:260px;
+background:#111827;
+color:white;
+padding:20px;
+display:flex;
+flex-direction:column;
+}
+
+
+.brand{
+
+display:flex;
+align-items:center;
+gap:12px;
+margin-bottom:25px;
+
+}
+
+
+.logo{
+
+font-size:32px;
+
+}
+
+
+.brand h2{
+
+margin:0;
+font-size:20px;
+
+}
+
+
+.brand span{
+
+display:flex;
+align-items:center;
+gap:5px;
+font-size:12px;
+opacity:.8;
+
+}
+
+
+
+.status{
+
+background:#1f2937;
+padding:10px;
+border-radius:12px;
+margin-bottom:20px;
+font-size:14px;
+
+}
+
+
+
+.menu{
+
+display:flex;
+align-items:center;
+gap:12px;
+padding:12px;
+border-radius:12px;
+color:#d1d5db;
+text-decoration:none;
+margin-bottom:8px;
+transition:.3s;
+
+}
+
+
+.menu:hover,
+.menu.active{
+
+background:#2563eb;
+color:white;
+
+}
+
+
+
+/* Main */
+
+
+.main-content{
+
+flex:1;
+padding:25px;
+
+}
+
+
+
+/* Header */
+
+
+.header{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:white;
+padding:18px 25px;
+border-radius:18px;
+margin-bottom:25px;
+box-shadow:0 5px 20px rgba(0,0,0,.05);
+
+}
+
+
+
+.header-actions{
+
+display:flex;
+gap:12px;
+align-items:center;
+
+}
+
+
+.language-btn,
+.notification-btn{
+
+background:white;
+border:1px solid #e5e7eb;
+padding:10px 15px;
+border-radius:12px;
+cursor:pointer;
+
+}
+
+
+/* Cards */
+
+
+.stat-card,
+.form-card,
+.result-card,
+.campaign-card,
+.content-card{
+
+background:white;
+border-radius:20px;
+padding:25px;
+box-shadow:
+0 10px 25px rgba(0,0,0,.05);
+
+}
+
+
+
+/* Buttons */
+
+
+button{
+
+border:none;
+background:#2563eb;
+color:white;
+padding:12px 20px;
+border-radius:12px;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+
+}
+
+
+button:hover{
+
+opacity:.9;
+
+}
+
+
+
+/* Inputs */
+
+
+input,
+select{
+
+width:100%;
+padding:14px;
+border:1px solid #e5e7eb;
+border-radius:12px;
+margin-bottom:15px;
+font-size:15px;
+
+}
+
+
+
+/* RTL Support */
+
+
+html[dir="rtl"] .app-layout{
+
+direction:rtl;
+
+}
+
+
+html[dir="ltr"] .app-layout{
+
+direction:ltr;
+
+}
