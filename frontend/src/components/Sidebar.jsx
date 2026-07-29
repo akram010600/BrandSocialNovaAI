@@ -23,6 +23,7 @@ export default function Sidebar(){
 const { t } = useTranslation();
 
 
+
 const menu=[
 
 {
@@ -31,13 +32,11 @@ path:"/",
 icon:<LayoutDashboard size={20}/>
 },
 
-
 {
 name:t("sidebar.create"),
 path:"/create",
 icon:<PenSquare size={20}/>
 },
-
 
 {
 name:t("sidebar.images"),
@@ -45,13 +44,11 @@ path:"/image-generator",
 icon:<Image size={20}/>
 },
 
-
 {
 name:t("sidebar.promptGenerator"),
 path:"/prompt-generator",
 icon:<Brain size={20}/>
 },
-
 
 {
 name:t("sidebar.promptLibrary"),
@@ -59,13 +56,11 @@ path:"/prompts",
 icon:<Library size={20}/>
 },
 
-
 {
 name:t("sidebar.campaigns"),
 path:"/campaigns",
 icon:<Megaphone size={20}/>
 },
-
 
 {
 name:t("sidebar.calendar"),
@@ -73,13 +68,11 @@ path:"/calendar",
 icon:<CalendarDays size={20}/>
 },
 
-
 {
 name:t("sidebar.planner"),
 path:"/planner",
 icon:<WandSparkles size={20}/>
 },
-
 
 {
 name:t("sidebar.analytics"),
@@ -87,20 +80,19 @@ path:"/analytics",
 icon:<BarChart3 size={20}/>
 },
 
-
 {
 name:t("sidebar.integrations"),
 path:"/integrations",
 icon:<Link2 size={20}/>
 }
 
-
 ];
 
 
 
-return(
 
+
+return(
 
 <aside className="sidebar">
 
@@ -109,9 +101,7 @@ return(
 
 
 <div className="logo">
-
 🚀
-
 </div>
 
 
@@ -119,18 +109,15 @@ return(
 <div>
 
 <h2>
-
-BrandSocialNova
-
+{t("header.brand")}
 </h2>
-
 
 
 <span>
 
 <Sparkles size={14}/>
 
-AI Marketing Platform
+{t("sidebar.platform")}
 
 </span>
 
@@ -146,7 +133,7 @@ AI Marketing Platform
 
 <div className="status">
 
-🟢 AI Engine Online
+🟢 {t("sidebar.online")}
 
 </div>
 
@@ -168,6 +155,8 @@ key={item.path}
 
 to={item.path}
 
+title={item.name}
+
 className={({isActive})=>
 
 isActive
@@ -188,11 +177,8 @@ isActive
 {item.icon}
 
 
-
 <span>
-
 {item.name}
-
 </span>
 
 
@@ -217,11 +203,8 @@ isActive
 <Settings size={20}/>
 
 
-
 <span>
-
 {t("sidebar.settings")}
-
 </span>
 
 
@@ -229,11 +212,8 @@ isActive
 
 
 
-
 </aside>
 
-
 );
-
 
 }
