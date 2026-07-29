@@ -1,14 +1,19 @@
 import { useState } from "react";
 
 import {
-  Sparkles,
   Wand2,
   Save
 } from "lucide-react";
 
+import { useTranslation } from "react-i18next";
+
 
 
 export default function CreatePost(){
+
+
+const { t } = useTranslation();
+
 
 
 const [business,setBusiness]=useState("");
@@ -25,6 +30,7 @@ const [platform,setPlatform]=useState("facebook");
 const [result,setResult]=useState(null);
 
 const [loading,setLoading]=useState(false);
+
 
 
 
@@ -87,7 +93,7 @@ catch(error){
 
 console.log(error);
 
-alert("حدث خطأ");
+alert(t("createPost.error"));
 
 }
 
@@ -105,24 +111,28 @@ setLoading(false);
 
 
 
+
 return(
 
 
 <div className="page">
 
 
+
 <h1>
 
-✨ AI Content Studio
+{t("createPost.title")}
 
 </h1>
 
 
+
 <p>
 
-إنشاء محتوى تسويقي احترافي بالذكاء الاصطناعي
+{t("createPost.subtitle")}
 
 </p>
+
 
 
 
@@ -131,9 +141,10 @@ return(
 <div className="form-card">
 
 
+
 <input
 
-placeholder="اسم النشاط"
+placeholder={t("createPost.business")}
 
 value={business}
 
@@ -143,9 +154,11 @@ onChange={e=>setBusiness(e.target.value)}
 
 
 
+
+
 <input
 
-placeholder="المجال مثال: مطعم، حضانة، عقارات"
+placeholder={t("createPost.category")}
 
 value={category}
 
@@ -156,15 +169,20 @@ onChange={e=>setCategory(e.target.value)}
 
 
 
+
+
 <input
 
-placeholder="الهدف التسويقي"
+placeholder={t("createPost.goal")}
 
 value={goal}
 
 onChange={e=>setGoal(e.target.value)}
 
 />
+
+
+
 
 
 
@@ -178,42 +196,45 @@ onChange={e=>setPostType(e.target.value)}
 >
 
 
-<option>
+<option value="">
 
-نوع المنشور
-
-</option>
-
-
-<option>
-
-إعلان عرض
+{t("createPost.post_type")}
 
 </option>
 
 
 <option>
 
-منشور تعريفي
+{t("createPost.offer")}
 
 </option>
 
 
 <option>
 
-زيادة تفاعل
+{t("createPost.intro")}
 
 </option>
 
 
 <option>
 
-بناء ثقة
+{t("createPost.engagement")}
+
+</option>
+
+
+<option>
+
+{t("createPost.trust")}
 
 </option>
 
 
 </select>
+
+
+
 
 
 
@@ -255,6 +276,10 @@ LinkedIn
 
 
 
+
+
+
+
 <button
 
 onClick={generate}
@@ -264,9 +289,11 @@ onClick={generate}
 
 {
 
-loading ?
+loading
 
-"⏳ جاري الإنشاء..."
+?
+
+t("createPost.loading")
 
 :
 
@@ -274,7 +301,7 @@ loading ?
 
 <Wand2 size={20}/>
 
-إنشاء المحتوى AI
+{t("createPost.create")}
 
 </>
 
@@ -285,7 +312,10 @@ loading ?
 
 
 
+
+
 </div>
+
 
 
 
@@ -300,11 +330,14 @@ result &&
 <div className="result-card">
 
 
+
 <h2>
 
 {result.title}
 
 </h2>
+
+
 
 
 <p>
@@ -315,11 +348,15 @@ result &&
 
 
 
+
+
+{
+
+result.image &&
+
 <img
 
-src={
-"http://127.0.0.1:8000"+result.image
-}
+src={"http://127.0.0.1:8000"+result.image}
 
 style={{
 
@@ -332,9 +369,16 @@ borderRadius:"20px"
 
 />
 
+}
+
+
+
 
 
 <br/>
+
+
+
 
 
 <button>
@@ -342,9 +386,10 @@ borderRadius:"20px"
 
 <Save size={18}/>
 
-حفظ المنشور
+{t("createPost.save")}
 
 </button>
+
 
 
 
@@ -352,6 +397,8 @@ borderRadius:"20px"
 
 
 }
+
+
 
 
 

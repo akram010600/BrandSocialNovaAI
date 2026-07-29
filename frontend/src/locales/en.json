@@ -42,4 +42,21 @@
   "database": "Database Connected",
   "ready": "BrandSocialNova is ready to manage content"
 }
+,
+"createPost": {
+  "title": "✨ AI Content Studio",
+  "subtitle": "Create professional marketing content using AI",
+  "business": "Business name",
+  "category": "Category example: Restaurant, Nursery, Real Estate",
+  "goal": "Marketing goal",
+  "post_type": "Post type",
+  "offer": "Offer Advertisement",
+  "intro": "Introduction Post",
+  "engagement": "Increase Engagement",
+  "trust": "Build Trust",
+  "create": "Create AI Content",
+  "loading": "⏳ Generating...",
+  "save": "Save Post",
+  "error": "An error occurred"
+}
 }
