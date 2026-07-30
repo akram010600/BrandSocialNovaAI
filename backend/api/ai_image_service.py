@@ -1,69 +1,39 @@
 import os
 import uuid
-import base64
-
-from openai import OpenAI
-from dotenv import load_dotenv
 
 
-load_dotenv()
+def generate_ai_image(prompt: str):
 
+    """
+    مولد صور تجريبي مجاني
+    """
 
-client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY")
-)
-
-
-IMAGE_FOLDER = "generated_images"
-
-
-def generate_ai_image(prompt):
+    folder = "generated_images"
 
     os.makedirs(
-        IMAGE_FOLDER,
+        folder,
         exist_ok=True
     )
 
 
-    response = client.images.generate(
-
-        model="gpt-image-1",
-
-        prompt=prompt,
-
-        size="1024x1024",
-
-        quality="high"
-
-    )
+    file_name = f"{uuid.uuid4()}.txt"
 
 
-    image_base64 = response.data[0].b64_json
-
-
-    image_name = f"{uuid.uuid4()}.png"
-
-
-    image_path = os.path.join(
-
-        IMAGE_FOLDER,
-
-        image_name
-
-    )
-
-
-    image_bytes = base64.b64decode(
-        image_base64
+    file_path = os.path.join(
+        folder,
+        file_name
     )
 
 
     with open(
-        image_path,
-        "wb"
-    ) as file:
+        file_path,
+        "w",
+        encoding="utf-8"
+    ) as f:
 
-        file.write(image_bytes)
+        f.write(
+            "IMAGE PROMPT:\n" + prompt
+        )
 
 
-    return image_path
+    return "/images/" + file_name

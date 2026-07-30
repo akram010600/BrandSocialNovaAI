@@ -1,131 +1,28 @@
-import random
-import re
+import json
 
-from content_templates import CONTENT_TEMPLATES
-
-
-
-def detect_category(text: str):
-
-    text = text.lower()
-
-
-    if any(word in text for word in [
-        "مدرسة",
-        "تعليم",
-        "طالب",
-        "طلاب",
-        "دراسة",
-        "أكاديمية",
-        "معهد"
-    ]):
-        return "تعليم"
+from llm_service import ask_ai
+from business_ai import analyze_business
 
 
 
-    if any(word in text for word in [
-        "حضانة",
-        "طفل",
-        "أطفال",
-        "رعاية",
-        "كي جي"
-    ]):
-        return "حضانة"
+def clean_json(text):
 
+    """
+    استخراج JSON من رد الذكاء الاصطناعي
+    """
 
+    try:
 
-    if any(word in text for word in [
-        "مطعم",
-        "مطاعم",
-        "وجبة",
-        "طعام",
-        "سندوتش",
-        "أكل"
-    ]):
-        return "مطاعم"
+        start = text.find("{")
+        end = text.rfind("}") + 1
 
+        return json.loads(
+            text[start:end]
+        )
 
+    except:
 
-    if any(word in text for word in [
-        "عقار",
-        "شقة",
-        "فيلا",
-        "تشطيب",
-        "بيع",
-        "شراء"
-    ]):
-        return "عقارات"
-
-
-
-    return "خدمات"
-
-
-
-
-
-def extract_brand_name(prompt: str):
-
-
-    brand = prompt
-
-
-
-    # دعم النظام القديم
-    if "الموضوع:" in brand:
-
-        brand = brand.split("الموضوع:")[1]
-
-
-
-    # دعم النظام الجديد V2
-
-    if "اسم النشاط:" in brand:
-
-        brand = brand.split("اسم النشاط:")[1]
-
-
-
-    # حذف باقي بيانات الحملة
-
-    for key in [
-        "المجال:",
-        "الهدف التسويقي:",
-        "نوع المنشور:",
-        "المنصة:",
-        "الأسلوب:",
-        "المطلوب:",
-        "أنشئ",
-        "أنت خبير"
-    ]:
-
-
-        if key in brand:
-
-            brand = brand.split(key)[0]
-
-
-
-    # تنظيف
-
-    brand = brand.strip()
-
-
-
-    # أخذ أول سطر فقط
-
-    lines = brand.splitlines()
-
-
-    if lines:
-
-        brand = lines[0].strip()
-
-
-
-    return brand or "علامتك التجارية"
-
-
+        return {}
 
 
 
@@ -133,135 +30,129 @@ def extract_brand_name(prompt: str):
 
 def generate_content(prompt: str):
 
+    """
+    إنشاء محتوى تسويقي ذكي لأي نشاط
+    """
 
-    category = detect_category(prompt)
-
-
-    brand = extract_brand_name(prompt)
-
-
-
-    template = CONTENT_TEMPLATES.get(
-        category,
-        CONTENT_TEMPLATES["خدمات"]
-    )
+    try:
 
 
-
-    title = random.choice(
-        template.get(
-            "titles",
-            ["أفضل اختيار لك"]
+        # تحليل النشاط
+        business_analysis = analyze_business(
+            business=prompt
         )
-    )
 
 
-
-    goal = random.choice(
-        template.get(
-            "goals",
-            ["زيادة العملاء"]
+        industry = business_analysis.get(
+            "industry",
+            "عام"
         )
-    )
 
 
-
-    style = template.get(
-        "style",
-        ""
-    )
-
+        audience = business_analysis.get(
+            "target_audience",
+            "العملاء المحتملون"
+        )
 
 
+        style = business_analysis.get(
+            "marketing_style",
+            "احترافي"
+        )
 
 
-    content_map = {
+        strategy = business_analysis.get(
+            "content_strategy",
+            "زيادة العملاء والمبيعات"
+        )
 
 
+        ai_prompt=f"""
 
-        "تعليم": f"""
-في {brand} نؤمن أن التعليم هو الاستثمار الحقيقي في المستقبل.
+أنت خبير تسويق رقمي عالمي.
 
-نوفر بيئة تعليمية متطورة تجمع بين المعرفة والمهارات،
-مع متابعة مستمرة تساعد الطلاب على تحقيق أفضل النتائج.
-""",
+قم بإنشاء منشور إعلاني للسوشيال ميديا.
 
+بيانات النشاط:
 
+المجال:
+{industry}
 
+الجمهور المستهدف:
+{audience}
 
-        "حضانة": f"""
-في {brand} نهتم بأطفالكم ونوفر لهم بيئة آمنة ومحفزة.
-
-رعاية مميزة، تعلم ممتع، وتنمية شاملة تساعد الطفل على النمو بثقة.
-""",
-
-
-
-
-        "مطاعم": f"""
-استمتع بتجربة طعام مختلفة مع {brand}.
-
-جودة عالية، مذاق مميز، وخدمة تجعل كل زيارة تجربة لا تُنسى.
-""",
-
-
-
-
-        "عقارات": f"""
-مع {brand} نساعدك في الوصول إلى العقار المناسب.
-
-حلول مدروسة تناسب احتياجات السكن والاستثمار.
-""",
-
-
-
-
-        "خدمات": f"""
-مع {brand} نقدم حلولاً احترافية تساعدك على تطوير أعمالك وتحقيق أهدافك.
-"""
-
-    }
-
-
-
-
-    content = f"""
-{title}
-
-
-{content_map.get(category)}
-
-
-
-✨ الهدف:
-{goal}
-
-
-📌 أسلوب العلامة:
+أسلوب العلامة:
 {style}
 
+الهدف:
+{strategy}
 
 
-✅ جودة عالية
-✅ خدمة احترافية
-✅ حلول تناسب احتياجات العملاء
+القواعد:
+
+- لا تكتب كلام عام.
+- اجعل المحتوى خاص بالنشاط.
+- استخدم لغة عربية تسويقية.
+- أضف عنوان قوي.
+- أضف Call To Action.
+- أضف هاشتاجات مناسبة.
 
 
+أرجع JSON فقط:
 
-📲 تواصل معنا الآن واحصل على أفضل تجربة.
+{{
+"title":"",
+"content":""
+}}
 
-
-#تسويق_رقمي
-#{category}
-#BrandSocialNovaAI
 """
 
 
+        response = ask_ai(
+            ai_prompt
+        )
 
-    return {
 
-        "title": title,
+        data = clean_json(
+            response
+        )
 
-        "content": content.strip()
 
-    }
+        return {
+
+            "title":
+            data.get(
+                "title",
+                f"اكتشف أفضل ما تقدمه {industry}"
+            ),
+
+
+            "content":
+            data.get(
+                "content",
+                "محتوى تسويقي جاهز للنشر"
+            )
+
+        }
+
+
+
+    except Exception as e:
+
+
+        print(
+            "AI ERROR:",
+            e
+        )
+
+
+        return {
+
+            "title":
+            "منشور جديد",
+
+
+            "content":
+            "نقدم لكم خدمات مميزة بجودة عالية وثقة مستمرة."
+
+        }

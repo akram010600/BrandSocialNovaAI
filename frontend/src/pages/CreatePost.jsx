@@ -1,7 +1,10 @@
 import { useState } from "react";
+
 import {
   Wand2,
-  Save
+  Save,
+  Copy,
+  Sparkles
 } from "lucide-react";
 
 import { useTranslation } from "react-i18next";
@@ -17,6 +20,7 @@ const [category,setCategory]=useState("");
 const [goal,setGoal]=useState("");
 const [postType,setPostType]=useState("");
 const [platform,setPlatform]=useState("facebook");
+const [style,setStyle]=useState("creative");
 
 const [result,setResult]=useState(null);
 const [loading,setLoading]=useState(false);
@@ -25,31 +29,54 @@ const [loading,setLoading]=useState(false);
 
 async function generate(){
 
+if(!business){
+alert("اكتب اسم النشاط أولا");
+return;
+}
+
+
 setLoading(true);
+
 
 try{
 
+
 const response = await fetch(
+
 "http://127.0.0.1:8000/api/generate",
+
 {
+
 method:"POST",
+
 headers:{
 "Content-Type":"application/json"
 },
+
 body:JSON.stringify({
 
 business,
+
 category,
+
 goal,
+
 post_type:postType,
-platform
+
+platform,
+
+style
 
 })
+
 }
+
 );
 
 
+
 const data = await response.json();
+
 
 setResult(data);
 
@@ -60,7 +87,7 @@ catch(error){
 
 console.error(error);
 
-alert("Error");
+alert("حدث خطأ أثناء إنشاء المحتوى");
 
 }
 
@@ -70,7 +97,22 @@ setLoading(false);
 
 }
 
+
 }
+
+
+
+
+function copyContent(){
+
+navigator.clipboard.writeText(
+result.content
+);
+
+alert("تم نسخ المحتوى ✅");
+
+}
+
 
 
 
@@ -79,18 +121,46 @@ return(
 <div className="page">
 
 
+<div className="hero">
+
+<div>
+
 <h1>
 ✨ {t("create.title")}
 </h1>
-
 
 <p>
 {t("create.subtitle")}
 </p>
 
+</div>
+
+
+<div className="ai-badge">
+
+🟢 AI Content Engine
+
+</div>
+
+
+</div>
+
+
+
 
 
 <div className="form-card">
+
+
+<h2>
+
+<Sparkles size={22}/>
+
+إنشاء منشور ذكي
+
+</h2>
+
+
 
 
 <input
@@ -102,6 +172,7 @@ value={business}
 onChange={(e)=>setBusiness(e.target.value)}
 
 />
+
 
 
 
@@ -117,6 +188,7 @@ onChange={(e)=>setCategory(e.target.value)}
 
 
 
+
 <input
 
 placeholder={t("create.goal")}
@@ -129,29 +201,38 @@ onChange={(e)=>setGoal(e.target.value)}
 
 
 
+
+
 <select
+
 value={postType}
+
 onChange={(e)=>setPostType(e.target.value)}
+
 >
 
-<option>
-Post Type
+<option value="">
+نوع المحتوى
 </option>
 
 <option>
-Advertisement
+إعلان عرض
 </option>
 
 <option>
-Educational
+منشور تعريفي
 </option>
 
 <option>
-Engagement
+زيادة تفاعل
 </option>
 
+<option>
+بناء ثقة
+</option>
 
 </select>
+
 
 
 
@@ -168,11 +249,9 @@ onChange={(e)=>setPlatform(e.target.value)}
 Facebook
 </option>
 
-
 <option value="instagram">
 Instagram
 </option>
-
 
 <option value="linkedin">
 LinkedIn
@@ -180,6 +259,44 @@ LinkedIn
 
 
 </select>
+
+
+
+
+
+
+<select
+
+value={style}
+
+onChange={(e)=>setStyle(e.target.value)}
+
+>
+
+
+<option value="creative">
+إبداعي
+</option>
+
+
+<option value="professional">
+احترافي
+</option>
+
+
+<option value="sales">
+بيعي
+</option>
+
+
+<option value="friendly">
+ودّي
+</option>
+
+
+</select>
+
+
 
 
 
@@ -193,6 +310,7 @@ disabled={loading}
 
 >
 
+
 <Wand2 size={20}/>
 
 
@@ -202,7 +320,7 @@ loading
 
 ?
 
-"⏳ Loading..."
+"⏳ جاري إنشاء المحتوى..."
 
 :
 
@@ -221,6 +339,8 @@ t("create.generate")
 
 
 
+
+
 {
 
 result &&
@@ -229,13 +349,20 @@ result &&
 
 
 <h2>
+
 {result.title}
+
 </h2>
 
 
+
+
 <p>
+
 {result.content}
+
 </p>
+
 
 
 
@@ -245,11 +372,18 @@ result.image &&
 
 <img
 
-src={"http://127.0.0.1:8000"+result.image}
+src={
+"http://127.0.0.1:8000"+result.image
+}
 
 style={{
-width:"400px",
+
+width:"100%",
+
+maxWidth:"500px",
+
 borderRadius:"20px"
+
 }}
 
 />
@@ -258,26 +392,43 @@ borderRadius:"20px"
 
 
 
-<br/>
+
+<div>
+
+
+<button onClick={copyContent}>
+
+<Copy size={18}/>
+
+نسخ
+
+</button>
+
 
 
 <button>
 
 <Save size={18}/>
 
-Save Post
+حفظ المنشور
 
 </button>
 
 
+</div>
+
+
+
 
 </div>
+
 
 }
 
 
 
 </div>
+
 
 );
 

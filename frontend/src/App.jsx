@@ -4,9 +4,9 @@ import { useEffect } from "react";
 
 import Sidebar from "./components/Sidebar.jsx";
 import Header from "./components/Header.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
-
-// Pages
+import Login from "./pages/Auth/Login.jsx";
 
 import Dashboard from "./pages/Dashboard.jsx";
 import CreatePost from "./pages/CreatePost.jsx";
@@ -20,13 +20,10 @@ import Calendar from "./pages/Calendar.jsx";
 import ContentPlanner from "./pages/ContentPlanner.jsx";
 
 
-
-
 export default function App() {
 
 
   const { i18n } = useTranslation();
-
 
 
   useEffect(() => {
@@ -34,113 +31,130 @@ export default function App() {
     document.documentElement.dir =
       i18n.language === "ar" ? "rtl" : "ltr";
 
-
     document.documentElement.lang =
       i18n.language;
-
 
   }, [i18n.language]);
 
 
 
-
-
   return (
 
-
-    <div className="app-layout">
-
-
-      <Sidebar />
+    <Routes>
 
 
+      {/* Login */}
 
-      <main className="main-content">
-
-
-        <Header title="BrandSocialNova AI" />
+      <Route
+        path="/login"
+        element={<Login />}
+      />
 
 
 
-        <Routes>
+      {/* Protected App */}
+
+      <Route
+
+        path="*"
+
+        element={
+
+          <ProtectedRoute>
 
 
-          <Route
-            path="/"
-            element={<Dashboard />}
-          />
+            <div className="app-layout">
 
 
-          <Route
-            path="/create"
-            element={<CreatePost />}
-          />
+              <Sidebar />
 
 
-          <Route
-            path="/image-generator"
-            element={<ImageGenerator />}
-          />
+              <main className="main-content">
 
 
-          <Route
-            path="/prompt-generator"
-            element={<PromptGenerator />}
-          />
+                <Header title="BrandSocialNova AI" />
 
 
-          <Route
-            path="/prompts"
-            element={<PromptLibrary />}
-          />
+                <Routes>
 
 
-          <Route
-            path="/campaigns"
-            element={<Campaigns />}
-          />
+                  <Route
+                    path="/"
+                    element={<Dashboard />}
+                  />
 
 
-          <Route
-            path="/calendar"
-            element={<Calendar />}
-          />
+                  <Route
+                    path="/create"
+                    element={<CreatePost />}
+                  />
 
 
-          <Route
-            path="/planner"
-            element={<ContentPlanner />}
-          />
+                  <Route
+                    path="/image-generator"
+                    element={<ImageGenerator />}
+                  />
 
 
-          <Route
-            path="/analytics"
-            element={<Analytics />}
-          />
+                  <Route
+                    path="/prompt-generator"
+                    element={<PromptGenerator />}
+                  />
 
 
-          <Route
-            path="/integrations"
-            element={<Integrations />}
-          />
+                  <Route
+                    path="/prompts"
+                    element={<PromptLibrary />}
+                  />
 
 
-          <Route
-            path="*"
-            element={<Dashboard />}
-          />
+                  <Route
+                    path="/campaigns"
+                    element={<Campaigns />}
+                  />
 
 
-        </Routes>
+                  <Route
+                    path="/calendar"
+                    element={<Calendar />}
+                  />
 
 
+                  <Route
+                    path="/planner"
+                    element={<ContentPlanner />}
+                  />
 
-      </main>
+
+                  <Route
+                    path="/analytics"
+                    element={<Analytics />}
+                  />
 
 
+                  <Route
+                    path="/integrations"
+                    element={<Integrations />}
+                  />
 
-    </div>
 
+                </Routes>
+
+
+              </main>
+
+
+            </div>
+
+
+          </ProtectedRoute>
+
+        }
+
+      />
+
+
+    </Routes>
 
   );
 

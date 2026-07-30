@@ -5,8 +5,7 @@ from sqlalchemy import (
     String,
     DateTime,
     Text,
-    Boolean,
-    ForeignKey
+    Boolean
 )
 
 from sqlalchemy.orm import (
@@ -26,17 +25,24 @@ DATABASE_URL = "sqlite:///./brandsocialnova.db"
 
 
 engine = create_engine(
+
     DATABASE_URL,
+
     connect_args={
         "check_same_thread": False
     }
+
 )
 
 
 SessionLocal = sessionmaker(
+
     autocommit=False,
+
     autoflush=False,
+
     bind=engine
+
 )
 
 
@@ -98,14 +104,6 @@ class User(Base):
     )
 
 
-    updated_at = Column(
-        DateTime,
-        default=datetime.utcnow,
-        onupdate=datetime.utcnow
-    )
-
-
-
 
 
 # ==================================================
@@ -121,13 +119,6 @@ class Post(Base):
         Integer,
         primary_key=True,
         index=True
-    )
-
-
-    user_id = Column(
-        Integer,
-        ForeignKey("users.id"),
-        nullable=True
     )
 
 
@@ -181,7 +172,6 @@ class Post(Base):
 
 
 
-
 # ==================================================
 # CAMPAIGNS TABLE
 # ==================================================
@@ -195,13 +185,6 @@ class Campaign(Base):
         Integer,
         primary_key=True,
         index=True
-    )
-
-
-    user_id = Column(
-        Integer,
-        ForeignKey("users.id"),
-        nullable=True
     )
 
 
@@ -249,7 +232,6 @@ class Campaign(Base):
 
 
 
-
 # ==================================================
 # PROMPT HISTORY TABLE
 # ==================================================
@@ -263,13 +245,6 @@ class PromptHistory(Base):
         Integer,
         primary_key=True,
         index=True
-    )
-
-
-    user_id = Column(
-        Integer,
-        ForeignKey("users.id"),
-        nullable=True
     )
 
 
@@ -317,7 +292,6 @@ class PromptHistory(Base):
 
 
 
-
 # ==================================================
 # CONTENT CALENDAR TABLE
 # ==================================================
@@ -331,13 +305,6 @@ class ContentPlan(Base):
         Integer,
         primary_key=True,
         index=True
-    )
-
-
-    user_id = Column(
-        Integer,
-        ForeignKey("users.id"),
-        nullable=True
     )
 
 
@@ -385,7 +352,6 @@ class ContentPlan(Base):
 
 
 
-
 # ==================================================
 # DATABASE FUNCTIONS
 # ==================================================
@@ -395,7 +361,6 @@ def init_db():
     Base.metadata.create_all(
         bind=engine
     )
-
 
 
 
